@@ -13,6 +13,14 @@ export const metadata: Metadata = {
     "Studio Ghibli art style",
     "Interactive Travel Experience",
   ],
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({

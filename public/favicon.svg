@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B3819" />
+      <stop offset="50%" stop-color="#122511" />
+      <stop offset="100%" stop-color="#091308" />
+    </linearGradient>
+    <linearGradient id="gold-rim" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCE19B" />
+      <stop offset="50%" stop-color="#D99B35" />
+      <stop offset="100%" stop-color="#8C5E28" />
+    </linearGradient>
+    <linearGradient id="horn-l" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#4A3420" />
+      <stop offset="50%" stop-color="#9C6B37" />
+      <stop offset="100%" stop-color="#FBE6AB" />
+    </linearGradient>
+    <linearGradient id="horn-r" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4A3420" />
+      <stop offset="50%" stop-color="#9C6B37" />
+      <stop offset="100%" stop-color="#FBE6AB" />
+    </linearGradient>
+    <linearGradient id="head-face" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#6F4D2E" />
+      <stop offset="100%" stop-color="#422915" />
+    </linearGradient>
+  </defs>
+
+  <!-- Luxurious Rounded Medallion Background -->
+  <rect x="8" y="8" width="240" height="240" rx="58" fill="url(#bg-grad)" stroke="url(#gold-rim)" stroke-width="7" />
+  
+  <!-- Subtle Inner Gold Filigree Inset -->
+  <rect x="18" y="18" width="220" height="220" rx="48" fill="none" stroke="#D99B35" stroke-width="1.2" stroke-opacity="0.35" />
+
+  <!-- Sacred Obudu Bull Head Crest -->
+  <g transform="translate(128, 142) scale(0.88)">
+    <!-- Left Sweeping Long Horn -->
+    <path
+      d="M -16 -6 C -48 -38 -88 -65 -122 -88 C -105 -72 -60 -28 -14 6 Z"
+      fill="url(#horn-l)"
+      stroke="#271A10"
+      stroke-width="2.5"
+    />
+    <path
+      d="M -20 -4 C -52 -34 -84 -58 -118 -82"
+      fill="none"
+      stroke="#FCE19B"
+      stroke-width="3"
+      stroke-linecap="round"
+      opacity="0.9"
+    />
+
+    <!-- Right Sweeping Long Horn -->
+    <path
+      d="M 16 -6 C 48 -38 88 -65 122 -88 C 105 -72 60 -28 14 6 Z"
+      fill="url(#horn-r)"
+      stroke="#271A10"
+      stroke-width="2.5"
+    />
+    <path
+      d="M 20 -4 C 52 -34 84 -58 118 -82"
+      fill="none"
+      stroke="#FCE19B"
+      stroke-width="3"
+      stroke-linecap="round"
+      opacity="0.9"
+    />
+
+    <!-- Flared Cattle Ears -->
+    <ellipse cx="-38" cy="8" rx="18" ry="9" fill="#583C25" transform="rotate(-15, -38, 8)" stroke="#2B1C10" stroke-width="2" />
+    <ellipse cx="-38" cy="8" rx="13" ry="5.5" fill="#8C5E35" transform="rotate(-15, -38, 8)" opacity="0.6" />
+    <ellipse cx="38" cy="8" rx="18" ry="9" fill="#583C25" transform="rotate(15, 38, 8)" stroke="#2B1C10" stroke-width="2" />
+    <ellipse cx="38" cy="8" rx="13" ry="5.5" fill="#8C5E35" transform="rotate(15, 38, 8)" opacity="0.6" />
+
+    <!-- Sculpted Head Skull -->
+    <path
+      d="M -30 -10 C -15 -18 15 -18 30 -10 C 34 16 26 44 18 68 C 10 76 -10 76 -18 68 C -26 44 -34 16 -30 -10 Z"
+      fill="url(#head-face)"
+      stroke="#271A10"
+      stroke-width="3"
+    />
+
+    <!-- Forehead Ochre Carved Marking -->
+    <path d="M -18 -4 Q 0 -10 18 -4 L 14 30 Q 0 36 -14 30 Z" fill="#D99B35" opacity="0.85" />
+    <polygon points="0,-4 5,12 0,22 -5,12" fill="#FCE19B" />
+
+    <!-- Cattle Muzzle & Nostrils -->
+    <ellipse cx="0" cy="62" rx="16" ry="10" fill="#24150B" stroke="#120A05" stroke-width="1.5" />
+    <ellipse cx="-6" cy="64" rx="3.5" ry="2.5" fill="#0D0603" />
+    <ellipse cx="6" cy="64" rx="3.5" ry="2.5" fill="#0D0603" />
+    <path d="M -9 68 Q 0 71 9 68" stroke="#5C3B1E" stroke-width="1.2" fill="none" stroke-linecap="round" />
+
+    <!-- Expressive Sculpted Eyes -->
+    <ellipse cx="-15" cy="14" rx="5" ry="4" fill="#1A0F08" />
+    <circle cx="-14" cy="13" r="1.8" fill="#FCE19B" />
+    <ellipse cx="15" cy="14" rx="5" ry="4" fill="#1A0F08" />
+    <circle cx="16" cy="13" r="1.8" fill="#FCE19B" />
+  </g>
+</svg>
