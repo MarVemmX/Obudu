@@ -8,10 +8,6 @@ import {
   X,
   ArrowRight,
   Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize2,
   Menu,
 } from "lucide-react";
 import confetti from "canvas-confetti";

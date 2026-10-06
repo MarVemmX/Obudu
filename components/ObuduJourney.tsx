@@ -4,22 +4,15 @@ import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Volume2,
   VolumeX,
-  Compass,
   Mountain,
   Calendar,
   Users,
   CheckCircle2,
   Palette,
-  Camera,
   X,
   ArrowUpRight,
   ArrowRight,
-  Wind,
   Eye,
-  MapPin,
-  Layers,
-  ChevronRight,
-  ChevronDown,
 } from "lucide-react";
 import confetti from "canvas-confetti";
 
@@ -383,7 +376,6 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
 
     targetProgressRef.current = 0;
     currentProgressRef.current = 0;
-    setScrollProgress(0);
 
     // Initial vehicle update
     setTimeout(() => {
@@ -674,7 +666,6 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
   // Autoplay ambient sound by default on mount (with mobile gesture fallback)
   useEffect(() => {
     isAudioPlayingRef.current = true;
-    setIsAudioPlaying(true);
 
     const tryStartAudio = () => {
       if (isAudioPlayingRef.current) {
