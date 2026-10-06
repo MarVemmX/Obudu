@@ -421,70 +421,67 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
       {/* ========================================================= */}
       {/* 1. TOP HEADER (LOGO EXACTLY IN THE MIDDLE)                 */}
       {/* ========================================================= */}
-      <header className="fixed top-0 inset-x-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 text-white px-4 sm:px-6 lg:px-8 xl:px-14 py-3 sm:py-3.5 md:py-4 transition-all">
-        <div className="max-w-7xl mx-auto grid grid-cols-[1fr_auto_1fr] items-center min-h-[44px]">
-          {/* Left Column: Mobile logo on mobile (< lg), desktop nav links on lg+ */}
-          <div className="flex items-center justify-start min-w-0">
-            {/* Mobile Brand Wordmark: Left-aligned on mobile/tablet so it never collides with buttons */}
-            <div className="flex lg:hidden flex-col items-start z-20">
-              <a
-                href="#"
-                className="font-display-ghibli text-lg sm:text-xl font-bold tracking-[0.28em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
-              >
-                OBUDU
-              </a>
-              <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-[#A69778] mt-0.5 whitespace-nowrap">
-                EST. 1951 • NIGERIA
-              </span>
-            </div>
-
-            {/* Left: Desktop Editorial Links - strictly bounded in left grid column with zero chance of overlap */}
-            <nav className="hidden lg:flex items-center gap-3 xl:gap-5 text-[9.5px] xl:text-[11px] font-mono uppercase tracking-[0.12em] xl:tracking-[0.2em] text-[#D0D0D0]">
-              <a href="#pass" className="hover:text-white transition-colors whitespace-nowrap">
-                <span className="xl:inline hidden">The 11km Pass</span>
-                <span className="xl:hidden inline">The Pass</span>
-              </a>
-              <a href="#gateway" className="hover:text-white transition-colors whitespace-nowrap">
-                <span className="xl:inline hidden">The Gateway</span>
-                <span className="xl:hidden inline">Gateway</span>
-              </a>
-              <a href="#heritage" className="hover:text-white transition-colors whitespace-nowrap">
-                Heritage
-              </a>
-              <a href="#chalets" className="hover:text-white transition-colors whitespace-nowrap">
-                Chalets
-              </a>
-              <a href="#dispatches" className="hover:text-white transition-colors whitespace-nowrap">
-                Dispatches
-              </a>
-            </nav>
-          </div>
-
-          {/* Center Column: Brand Wordmark (Mathematically centered in grid, strictly separated from columns) */}
-          <div className="hidden lg:flex flex-col items-center justify-center text-center px-4 xl:px-8 shrink-0">
+      <header className="fixed top-0 inset-x-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 text-white px-4 sm:px-8 md:px-12 xl:px-14 py-3.5 sm:py-4 md:py-5 transition-all">
+        <div className="max-w-7xl mx-auto relative flex items-center justify-between min-h-[44px]">
+          {/* Mobile/Tablet Brand Wordmark: Left-aligned on mobile/tablet so it never collides with buttons */}
+          <div className="flex lg:hidden flex-col items-start z-20">
             <a
               href="#"
-              className="font-display-ghibli text-lg xl:text-2xl font-bold tracking-[0.3em] xl:tracking-[0.35em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
+              className="font-display-ghibli text-lg sm:text-xl font-bold tracking-[0.28em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
             >
               OBUDU
             </a>
-            <span className="font-mono text-[8px] xl:text-[9px] uppercase tracking-[0.28em] xl:tracking-[0.35em] text-[#A69778] mt-0.5 whitespace-nowrap">
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-[#A69778] mt-0.5 whitespace-nowrap">
               EST. 1951 • NIGERIA
             </span>
           </div>
 
-          {/* Right Column: Sharp Action Buttons */}
-          <div className="flex items-center justify-end gap-2 sm:gap-3.5 ml-auto">
+          {/* Left: Desktop Editorial Links - strictly bounded so it leaves ample space before the center logo */}
+          <nav className="hidden lg:flex items-center gap-3 xl:gap-6 text-[9.5px] xl:text-[11px] font-mono uppercase tracking-[0.12em] xl:tracking-[0.22em] text-[#D0D0D0] z-10 max-w-[calc(50%-90px)]">
+            <a href="#pass" className="hover:text-white transition-colors whitespace-nowrap">
+              <span className="xl:inline hidden">The 11km Pass</span>
+              <span className="xl:hidden inline">The Pass</span>
+            </a>
+            <a href="#gateway" className="hover:text-white transition-colors whitespace-nowrap">
+              <span className="xl:inline hidden">The Gateway</span>
+              <span className="xl:hidden inline">Gateway</span>
+            </a>
+            <a href="#heritage" className="hover:text-white transition-colors whitespace-nowrap">
+              Heritage
+            </a>
+            <a href="#chalets" className="hover:text-white transition-colors whitespace-nowrap">
+              Chalets
+            </a>
+            <a href="#dispatches" className="hover:text-white transition-colors whitespace-nowrap">
+              Dispatches
+            </a>
+          </nav>
+
+          {/* Center: Brand Wordmark (Mathematically centered on desktop, with zero collision) */}
+          <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex-col items-center text-center z-20 pointer-events-auto">
+            <a
+              href="#"
+              className="font-display-ghibli text-xl xl:text-2xl font-bold tracking-[0.35em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
+            >
+              OBUDU
+            </a>
+            <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-[#A69778] mt-0.5 whitespace-nowrap">
+              EST. 1951 • NIGERIA
+            </span>
+          </div>
+
+          {/* Right: Sharp Action Buttons (Pushed to far right edge on all screens) */}
+          <div className="flex items-center gap-2.5 sm:gap-4 ml-auto z-20">
             <a
               href="#booking"
-              className="hidden sm:inline-block border border-white/60 px-3.5 xl:px-5 py-2 font-mono text-[9px] xl:text-[10px] uppercase tracking-[0.18em] xl:tracking-[0.22em] text-white hover:bg-white hover:text-black transition-all rounded-none font-semibold whitespace-nowrap"
+              className="hidden sm:inline-block border border-white/60 px-4 xl:px-5 py-2 font-mono text-[9px] xl:text-[10px] uppercase tracking-[0.22em] text-white hover:bg-white hover:text-black transition-all rounded-none font-semibold whitespace-nowrap"
             >
               Reservations
             </a>
 
             <button
               onClick={onSwitchToImmersive}
-              className="border border-[#D99B35] bg-[#D99B35] text-black px-3 xl:px-5 py-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.18em] sm:tracking-[0.22em] font-bold hover:bg-transparent hover:text-[#D99B35] transition-all rounded-none cursor-pointer whitespace-nowrap"
+              className="border border-[#D99B35] bg-[#D99B35] text-black px-3.5 sm:px-5 py-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] font-bold hover:bg-transparent hover:text-[#D99B35] transition-all rounded-none cursor-pointer whitespace-nowrap"
               title="Launch the interactive Studio Ghibli scrollytelling car drive"
             >
               <span className="hidden sm:inline">Immersive Drive</span>
@@ -494,7 +491,7 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 text-white hover:text-[#D99B35] transition-colors cursor-pointer flex items-center justify-center"
+              className="lg:hidden p-2 text-white hover:text-[#D99B35] transition-colors cursor-pointer flex items-center justify-center shrink-0"
               aria-label="Toggle navigation"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
