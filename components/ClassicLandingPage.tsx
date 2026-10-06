@@ -533,6 +533,16 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
             >
               Reservations
             </a>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onSwitchToImmersive();
+              }}
+              className="py-2.5 text-left text-[#D99B35] font-bold border-t border-white/10 mt-1 uppercase tracking-[0.25em] flex items-center justify-between"
+            >
+              <span>Interactive Drive</span>
+              <span className="text-xs">→</span>
+            </button>
           </div>
         )}
       </header>

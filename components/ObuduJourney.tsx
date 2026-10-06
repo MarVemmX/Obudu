@@ -9,7 +9,7 @@ import {
   Calendar,
   Users,
   CheckCircle2,
-  Sparkles,
+  Palette,
   Camera,
   X,
   ArrowUpRight,
@@ -916,7 +916,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
               className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1B3416]/85 hover:bg-[#284820] border border-[#D99B35]/50 text-[#F6DDA8] text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md cursor-pointer hover:scale-105 active:scale-95"
               title="Explore the hand-painted Studio Ghibli art collection of Obudu"
             >
-              <Sparkles className="w-3.5 h-3.5 text-[#E5B853]" />
+              <Palette className="w-3.5 h-3.5 text-[#E5B853]" />
               <span className="hidden sm:inline">Art Gallery</span>
             </button>
 
@@ -1329,7 +1329,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
             <div className="flex items-center justify-between p-5 md:p-6 border-b border-[#E8DEC7] bg-gradient-to-r from-[#F6EEDC] to-[#EFE2C8]">
               <div>
                 <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B3416] text-[#FBEBC8] text-[10px] font-bold tracking-widest uppercase mb-1.5 border border-[#D99B35]/40">
-                  <Sparkles className="w-3 h-3 text-[#E5B853]" />
+                  <Palette className="w-3 h-3 text-[#E5B853]" />
                   Art Collection
                 </div>
                 <h3 className="font-display-ghibli text-2xl md:text-3xl font-bold text-[#142A12]">
@@ -1388,12 +1388,12 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                       />
                     </div>
                     <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#18311B]/90 backdrop-blur-md text-[#FBEBC8] text-[10px] font-bold tracking-widest uppercase border border-[#D99B35]/40 shadow-md flex items-center gap-1.5">
-                      <Sparkles className="w-3 h-3 text-[#E5B853]" />
+                      <Palette className="w-3 h-3 text-[#E5B853]" />
                       Studio Ghibli Gouache
                     </div>
                     <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-[#142614]/85 backdrop-blur-md border border-[#44663B]/60 text-[#F5EDE0] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                       <span className="font-serif-ghibli italic text-xs text-[#E3D4B8]">
-                        ✦ {item.atmosphere}
+                        {item.atmosphere}
                       </span>
                     </div>
                   </div>

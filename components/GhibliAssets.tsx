@@ -862,7 +862,7 @@ export const IconicObuduEntranceOverhead: React.FC<{
         textAnchor="middle"
         letterSpacing="2.5"
       >
-        ✦ WELCOME TO ✦
+        WELCOME TO
       </text>
 
       {/* Line 2: The Resort Name - crisp, prominent, constrained by textLength to guarantee ZERO overflow */}

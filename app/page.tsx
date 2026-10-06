@@ -6,7 +6,7 @@ import { ClassicLandingPage } from "@/components/ClassicLandingPage";
 
 export default function Home() {
   const [experienceMode, setExperienceMode] = useState<"immersive" | "classic">(
-    "immersive"
+    "classic"
   );
 
   const handleSwitchToClassic = () => {
