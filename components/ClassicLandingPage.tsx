@@ -425,32 +425,45 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
       {/* ========================================================= */}
       {/* 1. TOP HEADER (LOGO EXACTLY IN THE MIDDLE)                 */}
       {/* ========================================================= */}
-      <header className="fixed top-0 inset-x-0 z-50 bg-black/85 backdrop-blur-md border-b border-white/10 text-white px-6 md:px-14 py-5 transition-all">
+      <header className="fixed top-0 inset-x-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 text-white px-4 sm:px-8 md:px-12 xl:px-14 py-3.5 sm:py-4 md:py-5 transition-all">
         <div className="max-w-7xl mx-auto relative flex items-center justify-between min-h-[44px]">
-          {/* Left: Quick Minimalist Editorial Links */}
-          <nav className="hidden lg:flex items-center gap-7 text-[11px] font-mono uppercase tracking-[0.25em] text-[#D0D0D0] z-10">
-            <a href="#pass" className="hover:text-white transition-colors">
+          {/* Mobile Brand Wordmark: Left-aligned on mobile/tablet so it never collides with buttons */}
+          <div className="flex lg:hidden flex-col items-start z-20">
+            <a
+              href="#"
+              className="font-display-ghibli text-lg sm:text-xl font-bold tracking-[0.28em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
+            >
+              OBUDU
+            </a>
+            <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-[#A69778] mt-0.5 whitespace-nowrap">
+              EST. 1951 • NIGERIA
+            </span>
+          </div>
+
+          {/* Left: Quick Minimalist Editorial Links with generous right spacing from centered logo */}
+          <nav className="hidden lg:flex items-center gap-4 xl:gap-6 text-[10px] xl:text-[11px] font-mono uppercase tracking-[0.18em] xl:tracking-[0.22em] text-[#D0D0D0] z-10 pr-10 xl:pr-16 max-w-[420px] xl:max-w-[480px]">
+            <a href="#pass" className="hover:text-white transition-colors whitespace-nowrap">
               The 11km Pass
             </a>
-            <a href="#gateway" className="hover:text-white transition-colors">
+            <a href="#gateway" className="hover:text-white transition-colors whitespace-nowrap">
               The Gateway
             </a>
-            <a href="#heritage" className="hover:text-white transition-colors">
+            <a href="#heritage" className="hover:text-white transition-colors whitespace-nowrap">
               Heritage
             </a>
-            <a href="#chalets" className="hover:text-white transition-colors">
+            <a href="#chalets" className="hover:text-white transition-colors whitespace-nowrap">
               Chalets
             </a>
-            <a href="#dispatches" className="hover:text-white transition-colors">
+            <a href="#dispatches" className="hover:text-white transition-colors whitespace-nowrap">
               Dispatches
             </a>
           </nav>
 
-          {/* Center: Brand Wordmark (Mathematically centered in the middle of header) */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex flex-col items-center text-center z-20 pointer-events-auto">
+          {/* Center: Brand Wordmark (Mathematically centered on desktop with ample breathing room on left) */}
+          <div className="hidden lg:flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 flex-col items-center text-center z-20 pointer-events-auto">
             <a
               href="#"
-              className="font-display-ghibli text-lg sm:text-2xl font-bold tracking-[0.35em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
+              className="font-display-ghibli text-xl xl:text-2xl font-bold tracking-[0.35em] text-white uppercase hover:opacity-90 transition-opacity whitespace-nowrap"
             >
               OBUDU
             </a>
@@ -460,17 +473,17 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
           </div>
 
           {/* Right: Sharp Action Buttons */}
-          <div className="flex items-center gap-4 ml-auto z-10">
+          <div className="flex items-center gap-2.5 sm:gap-4 ml-auto z-10">
             <a
               href="#booking"
-              className="hidden sm:inline-block border border-white/60 px-5 py-2 font-mono text-[10px] uppercase tracking-[0.25em] text-white hover:bg-white hover:text-black transition-all rounded-none font-semibold"
+              className="hidden sm:inline-block border border-white/60 px-4 xl:px-5 py-2 font-mono text-[9px] xl:text-[10px] uppercase tracking-[0.22em] text-white hover:bg-white hover:text-black transition-all rounded-none font-semibold whitespace-nowrap"
             >
               Reservations
             </a>
 
             <button
               onClick={onSwitchToImmersive}
-              className="border border-[#D99B35] bg-[#D99B35] text-black px-5 py-2 font-mono text-[10px] uppercase tracking-[0.25em] font-bold hover:bg-transparent hover:text-[#D99B35] transition-all rounded-none cursor-pointer"
+              className="border border-[#D99B35] bg-[#D99B35] text-black px-3.5 sm:px-5 py-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] font-bold hover:bg-transparent hover:text-[#D99B35] transition-all rounded-none cursor-pointer whitespace-nowrap"
               title="Launch the interactive Studio Ghibli scrollytelling car drive"
             >
               <span className="hidden sm:inline">Immersive Drive</span>
@@ -480,56 +493,56 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-1 text-white hover:text-[#D99B35] cursor-pointer"
+              className="lg:hidden p-2 text-white hover:text-[#D99B35] transition-colors cursor-pointer flex items-center justify-center"
               aria-label="Toggle navigation"
             >
-              <Menu className="w-5 h-5" />
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-4 pt-4 border-t border-white/10 flex flex-col gap-3 font-mono text-xs uppercase tracking-[0.25em] text-white">
+          <div className="lg:hidden mt-3.5 pt-4 border-t border-white/10 flex flex-col gap-3 font-mono text-xs uppercase tracking-[0.22em] text-white bg-black/40 backdrop-blur-md px-2 pb-2">
             <a
               href="#pass"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 hover:text-[#D99B35]"
+              className="py-1.5 hover:text-[#D99B35] transition-colors"
             >
               The 11km Pass
             </a>
             <a
               href="#gateway"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 hover:text-[#D99B35]"
+              className="py-1.5 hover:text-[#D99B35] transition-colors"
             >
               The Gateway
             </a>
             <a
               href="#heritage"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 hover:text-[#D99B35]"
+              className="py-1.5 hover:text-[#D99B35] transition-colors"
             >
               Heritage
             </a>
             <a
               href="#chalets"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 hover:text-[#D99B35]"
+              className="py-1.5 hover:text-[#D99B35] transition-colors"
             >
               Chalets
             </a>
             <a
               href="#dispatches"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 hover:text-[#D99B35]"
+              className="py-1.5 hover:text-[#D99B35] transition-colors"
             >
               Dispatches
             </a>
             <a
               href="#booking"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-1 text-[#D99B35]"
+              className="py-1.5 text-[#D99B35]"
             >
               Reservations
             </a>
@@ -538,7 +551,7 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
                 setMobileMenuOpen(false);
                 onSwitchToImmersive();
               }}
-              className="py-2.5 text-left text-[#D99B35] font-bold border-t border-white/10 mt-1 uppercase tracking-[0.25em] flex items-center justify-between"
+              className="py-2.5 text-left text-[#D99B35] font-bold border-t border-white/10 mt-1 uppercase tracking-[0.25em] flex items-center justify-between cursor-pointer"
             >
               <span>Interactive Drive</span>
               <span className="text-xs">→</span>
@@ -590,18 +603,18 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
             Perched 1,576 meters above the clouds on the Sankwala Plateau.
           </p>
 
-          {/* Sharp Edge Rectangular Buttons with distinctive color hierarchy */}
-          <div className="mt-10 flex flex-col sm:flex-row items-center gap-5">
+          {/* Sharp Edge Rectangular Buttons with refined sizing and mobile responsiveness */}
+          <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center gap-3.5 sm:gap-5 w-full sm:w-auto px-4 sm:px-0">
             <a
               href="#pass"
-              className="inline-block border border-[#D99B35] bg-[#D99B35] text-[#08120A] hover:bg-[#E5A842] hover:border-[#E5A842] font-mono text-xs uppercase tracking-[0.3em] font-bold px-9 py-4 transition-all duration-300 rounded-none shadow-2xl cursor-pointer"
+              className="inline-block border border-[#D99B35] bg-[#D99B35] text-[#08120A] hover:bg-[#E5A842] hover:border-[#E5A842] font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] font-bold px-6 py-3 sm:px-7 sm:py-3.5 transition-all duration-300 rounded-none shadow-xl cursor-pointer text-center w-full sm:w-auto"
             >
               Discover the Highland Sanctuary
             </a>
 
             <button
               onClick={() => setCinemaModalOpen(true)}
-              className="group inline-flex items-center gap-3 border border-white/70 bg-black/50 text-white hover:bg-white hover:text-black font-mono text-xs uppercase tracking-[0.3em] font-semibold px-8 py-4 transition-all duration-300 rounded-none cursor-pointer backdrop-blur-sm"
+              className="group inline-flex items-center justify-center gap-2.5 sm:gap-3 border border-white/70 bg-black/50 text-white hover:bg-white hover:text-black font-mono text-[11px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] font-semibold px-5 py-3 sm:px-6 sm:py-3.5 transition-all duration-300 rounded-none cursor-pointer backdrop-blur-sm text-center w-full sm:w-auto"
             >
               <Play className="w-3.5 h-3.5 fill-current text-[#D99B35] group-hover:text-black transition-colors" />
               <span>Watch Aerial Film</span>
@@ -1133,30 +1146,30 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
         </div>
 
         <div className="relative z-10 max-w-4xl mx-auto">
-          <div className="bg-[#0D140E]/95 border border-white/20 p-8 md:p-14 text-white rounded-none shadow-2xl">
+          <div className="bg-[#0D140E]/95 border border-white/20 p-5 sm:p-8 md:p-14 text-white rounded-none shadow-2xl">
             {!bookingConfirmed ? (
               <>
-                <div className="text-center mb-8 space-y-2">
-                  <div className="font-mono text-xs uppercase tracking-[0.3em] text-[#D99B35] font-semibold">
+                <div className="text-center mb-6 sm:mb-8 space-y-2">
+                  <div className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#D99B35] font-semibold">
                     EXCLUSIVE HIGHLAND RESERVATION
                   </div>
-                  <h2 className="font-display-ghibli text-3xl sm:text-5xl font-bold text-white tracking-tight uppercase">
+                  <h2 className="font-display-ghibli text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight uppercase">
                     Reserve Your Plateau Sanctuary
                   </h2>
-                  <p className="font-serif-ghibli italic text-base text-[#D0C5B0] max-w-xl mx-auto">
+                  <p className="font-serif-ghibli italic text-xs sm:text-sm md:text-base text-[#D0C5B0] max-w-xl mx-auto">
                     Experience authentic cedar chalets on stilts with volcanic stone fireplaces overlooking the clouds.
                   </p>
                 </div>
 
-                <form onSubmit={handleBookingSubmit} className="space-y-6">
+                <form onSubmit={handleBookingSubmit} className="space-y-4 sm:space-y-6">
                   <div>
-                    <label className="block font-mono text-[10px] uppercase tracking-[0.25em] text-[#D99B35] font-bold mb-2">
+                    <label className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#D99B35] font-bold mb-1.5 sm:mb-2">
                       Select Chalet Lodge
                     </label>
                     <select
                       value={chaletType}
                       onChange={(e) => setChaletType(e.target.value)}
-                      className="w-full bg-[#141F16] border border-white/20 px-4 py-3 text-sm text-white font-medium focus:outline-none focus:border-white rounded-none"
+                      className="w-full bg-[#141F16] border border-white/20 px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm text-white font-medium focus:outline-none focus:border-white rounded-none"
                     >
                       <option value="Mountain View Chalet">
                         Mountain View Chalet (2-Tier Cedar Lodge on Stilts)
@@ -1173,9 +1186,9 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
                     </select>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-5">
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-[0.25em] text-[#D99B35] font-bold mb-2">
+                      <label className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#D99B35] font-bold mb-1.5 sm:mb-2">
                         <span className="flex items-center gap-1.5">
                           <Calendar className="w-3 h-3 text-[#D99B35]" /> Check In
                         </span>
@@ -1184,12 +1197,12 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
                         type="date"
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
-                        className="w-full bg-[#141F16] border border-white/20 px-4 py-2.5 text-xs text-white font-medium focus:outline-none focus:border-white rounded-none"
+                        className="w-full bg-[#141F16] border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 text-xs text-white font-medium focus:outline-none focus:border-white rounded-none"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-[0.25em] text-[#D99B35] font-bold mb-2">
+                      <label className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#D99B35] font-bold mb-1.5 sm:mb-2">
                         <span className="flex items-center gap-1.5">
                           <Calendar className="w-3 h-3 text-[#D99B35]" /> Check Out
                         </span>
@@ -1198,12 +1211,12 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
                         type="date"
                         value={checkOutDate}
                         onChange={(e) => setCheckOutDate(e.target.value)}
-                        className="w-full bg-[#141F16] border border-white/20 px-4 py-2.5 text-xs text-white font-medium focus:outline-none focus:border-white rounded-none"
+                        className="w-full bg-[#141F16] border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 text-xs text-white font-medium focus:outline-none focus:border-white rounded-none"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-[10px] uppercase tracking-[0.25em] text-[#D99B35] font-bold mb-2">
+                      <label className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#D99B35] font-bold mb-1.5 sm:mb-2">
                         <span className="flex items-center gap-1.5">
                           <Users className="w-3 h-3 text-[#D99B35]" /> Guests
                         </span>
@@ -1211,7 +1224,7 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
                       <select
                         value={guestsCount}
                         onChange={(e) => setGuestsCount(Number(e.target.value))}
-                        className="w-full bg-[#141F16] border border-white/20 px-4 py-2.5 text-xs text-white font-medium focus:outline-none focus:border-white rounded-none"
+                        className="w-full bg-[#141F16] border border-white/20 px-3 sm:px-4 py-2 sm:py-2.5 text-xs text-white font-medium focus:outline-none focus:border-white rounded-none"
                       >
                         <option value={1}>1 Guest (Solo Retreat)</option>
                         <option value={2}>2 Guests (Highland Couple)</option>
@@ -1221,25 +1234,25 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-4 border-t border-white/10 space-y-3">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#D99B35] font-bold">
+                  <div className="pt-3 sm:pt-4 border-t border-white/10 space-y-2.5 sm:space-y-3">
+                    <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#D99B35] font-bold">
                       Curated Highland Inclusions
                     </div>
-                    <label className="flex items-center gap-2.5 text-xs text-[#CCCCCC] cursor-pointer">
+                    <label className="flex items-start sm:items-center gap-2.5 text-xs text-[#CCCCCC] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={includeCableCar}
                         onChange={(e) => setIncludeCableCar(e.target.checked)}
-                        className="rounded-none border-white/30 text-black focus:ring-0"
+                        className="rounded-none border-white/30 text-black focus:ring-0 mt-0.5 sm:mt-0 shrink-0"
                       />
                       <span>Complimentary Obudu Cable Car Unlimited Pass (4.0km ride)</span>
                     </label>
-                    <label className="flex items-center gap-2.5 text-xs text-[#CCCCCC] cursor-pointer">
+                    <label className="flex items-start sm:items-center gap-2.5 text-xs text-[#CCCCCC] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={includeCanopyWalk}
                         onChange={(e) => setIncludeCanopyWalk(e.target.checked)}
-                        className="rounded-none border-white/30 text-black focus:ring-0"
+                        className="rounded-none border-white/30 text-black focus:ring-0 mt-0.5 sm:mt-0 shrink-0"
                       />
                       <span>Becheve Nature Reserve & Canopy Walkway Guide</span>
                     </label>
@@ -1247,7 +1260,7 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
 
                   <button
                     type="submit"
-                    className="w-full mt-6 py-4 px-8 border border-white bg-white text-black hover:bg-transparent hover:text-white font-mono font-bold text-xs uppercase tracking-[0.3em] transition-all rounded-none cursor-pointer"
+                    className="w-full mt-5 sm:mt-6 py-3.5 sm:py-4 px-4 sm:px-8 border border-white bg-white text-black hover:bg-transparent hover:text-white font-mono font-bold text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all rounded-none cursor-pointer"
                   >
                     Confirm Sanctuary Reservation
                   </button>

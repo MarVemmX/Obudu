@@ -289,7 +289,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
     STORY_WAYPOINTS[0]
   );
   const [showArchiveModal, setShowArchiveModal] = useState(false);
-  const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+  const [isAudioPlaying, setIsAudioPlaying] = useState(true);
   const [cinemaMode, setCinemaMode] = useState(false);
 
   // Booking Form State (Phase 4)
@@ -304,6 +304,9 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
 
   // Web Audio Synthesizer Ref for ambient wind & birds
   const audioCtxRef = useRef<AudioContext | null>(null);
+  const isAudioPlayingRef = useRef<boolean>(true);
+  const birdTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const hasPlayedChimeRef = useRef<boolean>(false);
 
   // Smooth target jump
   const scrollToPhase = useCallback((targetProgress: number) => {
@@ -471,13 +474,18 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
   // ==========================================
   // AMBIENT NATURE AUDIO SYNTHESIZER
   // ==========================================
-  const toggleAmbientAudio = useCallback(() => {
-    if (!audioCtxRef.current) {
-      try {
-        const AudioContextClass =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext: typeof AudioContext })
-            .webkitAudioContext;
+  // ==========================================
+  // AMBIENT NATURE AUDIO SYNTHESIZER & CHIME
+  // ==========================================
+  const startAmbientAudio = useCallback(() => {
+    try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      if (!audioCtxRef.current) {
         const ctx = new AudioContextClass();
         audioCtxRef.current = ctx;
 
@@ -524,7 +532,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
         whiteNoise.start();
 
         const playBirdChirp = () => {
-          if (!audioCtxRef.current || audioCtxRef.current.state !== "running")
+          if (!audioCtxRef.current || audioCtxRef.current.state !== "running" || !isAudioPlayingRef.current)
             return;
           const osc = ctx.createOscillator();
           const chirpGain = ctx.createGain();
@@ -547,24 +555,174 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
           osc.start(now);
           osc.stop(now + 0.35);
 
-          setTimeout(playBirdChirp, 3500 + Math.random() * 7000);
+          birdTimerRef.current = setTimeout(playBirdChirp, 3500 + Math.random() * 7000);
         };
-        setTimeout(playBirdChirp, 2000);
+        birdTimerRef.current = setTimeout(playBirdChirp, 2000);
+      } else {
+        if (audioCtxRef.current.state === "suspended") {
+          audioCtxRef.current.resume();
+        }
+      }
 
-        setIsAudioPlaying(true);
-      } catch (err) {
-        console.error("Audio initialization error:", err);
-      }
-    } else {
-      if (audioCtxRef.current.state === "suspended") {
-        audioCtxRef.current.resume();
-        setIsAudioPlaying(true);
-      } else if (audioCtxRef.current.state === "running") {
-        audioCtxRef.current.suspend();
-        setIsAudioPlaying(false);
-      }
+      isAudioPlayingRef.current = true;
+      setIsAudioPlaying(true);
+    } catch (err) {
+      console.error("Audio initialization error:", err);
     }
   }, []);
+
+  const stopAmbientAudio = useCallback(() => {
+    if (audioCtxRef.current && audioCtxRef.current.state === "running") {
+      audioCtxRef.current.suspend();
+    }
+    if (birdTimerRef.current) {
+      clearTimeout(birdTimerRef.current);
+      birdTimerRef.current = null;
+    }
+    isAudioPlayingRef.current = false;
+    setIsAudioPlaying(false);
+  }, []);
+
+  const toggleAmbientAudio = useCallback(() => {
+    if (isAudioPlayingRef.current) {
+      stopAmbientAudio();
+    } else {
+      startAmbientAudio();
+    }
+  }, [startAmbientAudio, stopAmbientAudio]);
+
+  // Ethereal highland chime played when the reservation card pops up
+  const playReservationChime = useCallback(() => {
+    try {
+      const AudioContextClass =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext;
+      if (!AudioContextClass) return;
+
+      let ctx = audioCtxRef.current;
+      if (!ctx) {
+        ctx = new AudioContextClass();
+        audioCtxRef.current = ctx;
+      }
+
+      if (ctx.state === "suspended") {
+        ctx.resume();
+      }
+
+      // Highland Sanctuary Celestial Pentatonic Chime Chord
+      // Notes: E5 (659Hz), G#5 (831Hz), B5 (988Hz), E6 (1319Hz), G#6 (1661Hz)
+      const chimeNotes = [
+        { freq: 659.25, time: 0.00, duration: 2.2, gain: 0.16 },
+        { freq: 830.61, time: 0.09, duration: 2.4, gain: 0.18 },
+        { freq: 987.77, time: 0.18, duration: 2.6, gain: 0.20 },
+        { freq: 1318.51, time: 0.27, duration: 2.9, gain: 0.18 },
+        { freq: 1661.22, time: 0.36, duration: 3.2, gain: 0.14 },
+      ];
+
+      const now = ctx.currentTime;
+
+      chimeNotes.forEach((note) => {
+        const noteStart = now + note.time;
+
+        // Warm pure fundamental tone
+        const osc = ctx.createOscillator();
+        const noteGain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(note.freq, noteStart);
+
+        // Metallic overtone for authentic chime tube shimmer (2.756x harmonic)
+        const overtoneOsc = ctx.createOscillator();
+        const overtoneGain = ctx.createGain();
+        overtoneOsc.type = "triangle";
+        overtoneOsc.frequency.setValueAtTime(note.freq * 2.756, noteStart);
+
+        // Primary envelope: soft attack, long natural bell decay
+        noteGain.gain.setValueAtTime(0.0001, noteStart);
+        noteGain.gain.linearRampToValueAtTime(note.gain, noteStart + 0.012);
+        noteGain.gain.exponentialRampToValueAtTime(0.0001, noteStart + note.duration);
+
+        // Overtone envelope: quick high sparkle
+        overtoneGain.gain.setValueAtTime(0.0001, noteStart);
+        overtoneGain.gain.linearRampToValueAtTime(note.gain * 0.28, noteStart + 0.008);
+        overtoneGain.gain.exponentialRampToValueAtTime(0.0001, noteStart + note.duration * 0.45);
+
+        // Resonant highland bandpass filter
+        const filter = ctx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.setValueAtTime(note.freq * 1.5, noteStart);
+        filter.Q.setValueAtTime(0.8, noteStart);
+
+        osc.connect(noteGain);
+        noteGain.connect(ctx.destination);
+
+        overtoneOsc.connect(overtoneGain);
+        overtoneGain.connect(filter);
+        filter.connect(ctx.destination);
+
+        osc.start(noteStart);
+        osc.stop(noteStart + note.duration + 0.1);
+
+        overtoneOsc.start(noteStart);
+        overtoneOsc.stop(noteStart + note.duration * 0.5);
+      });
+    } catch (e) {
+      console.warn("Could not play reservation chime:", e);
+    }
+  }, []);
+
+  // Autoplay ambient sound by default on mount (with mobile gesture fallback)
+  useEffect(() => {
+    isAudioPlayingRef.current = true;
+    setIsAudioPlaying(true);
+
+    const tryStartAudio = () => {
+      if (isAudioPlayingRef.current) {
+        startAmbientAudio();
+      }
+    };
+
+    // Attempt start on mount (succeeds if user transitioned via click from landing page)
+    tryStartAudio();
+
+    // Browser policy gesture fallback: resume on first user interaction
+    const handleGesture = () => {
+      if (isAudioPlayingRef.current) {
+        tryStartAudio();
+      }
+    };
+
+    window.addEventListener("click", handleGesture, { passive: true, once: true });
+    window.addEventListener("touchstart", handleGesture, { passive: true, once: true });
+    window.addEventListener("wheel", handleGesture, { passive: true, once: true });
+    window.addEventListener("keydown", handleGesture, { passive: true, once: true });
+
+    return () => {
+      window.removeEventListener("click", handleGesture);
+      window.removeEventListener("touchstart", handleGesture);
+      window.removeEventListener("wheel", handleGesture);
+      window.removeEventListener("keydown", handleGesture);
+      if (birdTimerRef.current) {
+        clearTimeout(birdTimerRef.current);
+      }
+      if (audioCtxRef.current && audioCtxRef.current.state === "running") {
+        audioCtxRef.current.suspend();
+      }
+    };
+  }, [startAmbientAudio]);
+
+  // Play celestial chime when reservation pops up at Phase 4 (scrollProgress >= 0.82)
+  useEffect(() => {
+    if (scrollProgress >= 0.82) {
+      if (!hasPlayedChimeRef.current) {
+        hasPlayedChimeRef.current = true;
+        playReservationChime();
+      }
+    } else if (scrollProgress < 0.70) {
+      // Reset so ascending again triggers the welcoming chime
+      hasPlayedChimeRef.current = false;
+    }
+  }, [scrollProgress, playReservationChime]);
 
   const handleBookingSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -861,32 +1019,32 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       {/* ========================================================= */}
       {/* CINEMATIC SCROLLYTELLING HUD & NAVIGATION BAR              */}
       {/* ========================================================= */}
-      <header className="relative z-30 flex flex-col gap-2 px-6 py-4 md:px-10 md:py-5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#FCFBF7] text-[#284820] flex items-center justify-center font-display-ghibli font-bold text-base shadow-lg border border-[#D99B35]/40 animate-pulse-glow">
+      <header className="relative z-30 flex flex-col gap-2 px-3 sm:px-6 py-2.5 sm:py-4 md:px-10 md:py-5">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#FCFBF7] text-[#284820] flex items-center justify-center font-display-ghibli font-bold text-xs sm:text-base shadow-lg border border-[#D99B35]/40 animate-pulse-glow shrink-0">
               1951
             </div>
-            <div>
-              <h1 className="font-display-ghibli text-base md:text-lg font-bold tracking-widest text-[#FFFDF8] drop-shadow-md">
+            <div className="min-w-0">
+              <h1 className="font-display-ghibli text-xs sm:text-base md:text-lg font-bold tracking-wider sm:tracking-widest text-[#FFFDF8] drop-shadow-md truncate">
                 OBUDU MOUNTAIN RESORT
               </h1>
-              <p className="font-serif-ghibli italic text-xs md:text-sm text-[#F6DDA8] tracking-wider">
+              <p className="font-serif-ghibli italic text-[10px] sm:text-xs md:text-sm text-[#F6DDA8] tracking-wider truncate hidden xs:block sm:block">
                 Cross River Highlands • Nigeria • Studio Ghibli Odyssey
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
             {/* Switch to Classic Real-Life Mode Toggle */}
             {onSwitchToClassic && (
               <button
                 id="btn-switch-classic"
                 onClick={onSwitchToClassic}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FCFBF7] hover:bg-[#F3EAD5] text-[#1B3416] font-display-ghibli font-bold text-xs tracking-wider transition-all shadow-md border border-[#D99B35]/60 hover:scale-105 active:scale-95 cursor-pointer"
+                className="flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#FCFBF7] hover:bg-[#F3EAD5] text-[#1B3416] font-display-ghibli font-bold text-[10px] sm:text-xs tracking-wider transition-all shadow-md border border-[#D99B35]/60 hover:scale-105 active:scale-95 cursor-pointer shrink-0"
                 title="Switch to Real-Life Normal Scroll Mode with authentic photography"
               >
-                <Mountain className="w-3.5 h-3.5 text-[#A87A24]" />
+                <Mountain className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#A87A24]" />
                 <span className="hidden sm:inline">Real-Life Mode</span>
                 <span className="sm:hidden">Classic</span>
               </button>
@@ -896,14 +1054,14 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
             <button
               id="btn-cinema-mode"
               onClick={() => setCinemaMode(!cinemaMode)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md border cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md border cursor-pointer shrink-0 ${
                 cinemaMode
                   ? "bg-[#D99B35] text-[#1A3115] border-[#FFF9E6]"
                   : "bg-[#1B3416]/85 border-[#657E58] text-[#E0EBDC] hover:text-[#FFF9E6]"
               }`}
               title="Toggle Cinema Mode (hide/show story cards)"
             >
-              <Eye className="w-3.5 h-3.5" />
+              <Eye className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
               <span className="hidden sm:inline">
                 {cinemaMode ? "Exit Cinema" : "Cinema Mode"}
               </span>
@@ -913,10 +1071,10 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
             <button
               id="btn-archive-photos"
               onClick={() => setShowArchiveModal(true)}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1B3416]/85 hover:bg-[#284820] border border-[#D99B35]/50 text-[#F6DDA8] text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md cursor-pointer hover:scale-105 active:scale-95"
+              className="flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#1B3416]/85 hover:bg-[#284820] border border-[#D99B35]/50 text-[#F6DDA8] text-[10px] sm:text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md cursor-pointer hover:scale-105 active:scale-95 shrink-0"
               title="Explore the hand-painted Studio Ghibli art collection of Obudu"
             >
-              <Palette className="w-3.5 h-3.5 text-[#E5B853]" />
+              <Palette className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#E5B853]" />
               <span className="hidden sm:inline">Art Gallery</span>
             </button>
 
@@ -924,7 +1082,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
             <button
               id="btn-toggle-sound"
               onClick={toggleAmbientAudio}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md border cursor-pointer ${
+              className={`flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md border cursor-pointer shrink-0 ${
                 isAudioPlaying
                   ? "bg-[#284820] border-[#E5B853] text-[#FFF9E6]"
                   : "bg-[#1B3416]/80 border-[#657E58] text-[#D8E6D3] hover:text-[#FFF9E6]"
@@ -933,12 +1091,12 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
             >
               {isAudioPlaying ? (
                 <>
-                  <Volume2 className="w-3.5 h-3.5 text-[#E5B853] animate-pulse" />
+                  <Volume2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#E5B853] animate-pulse" />
                   <span className="hidden sm:inline">Sound: On</span>
                 </>
               ) : (
                 <>
-                  <VolumeX className="w-3.5 h-3.5 text-[#A3BF9E]" />
+                  <VolumeX className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#A3BF9E]" />
                   <span className="hidden sm:inline">Sound</span>
                 </>
               )}
@@ -947,26 +1105,27 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
         </div>
 
         {/* Quick Travel / Phase Waypoint Jump Bar */}
-        <div className="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none text-[11px]">
-          <span className="text-[#E5B853] font-bold uppercase tracking-wider text-[10px] hidden md:inline">
+        <div className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1 scrollbar-none text-[10px] sm:text-[11px]">
+          <span className="text-[#E5B853] font-bold uppercase tracking-wider text-[9px] sm:text-[10px] hidden md:inline shrink-0">
             Jump to:
           </span>
           {[
-            { label: "1. Serpentine Pass", prog: 0.05, phase: 1 },
-            { label: "2. Cattle Gateway", prog: 0.46, phase: 2 },
-            { label: "3. Ranch Village", prog: 0.65, phase: 3 },
-            { label: "4. Summit Sanctuary", prog: 0.9, phase: 4 },
+            { short: "1. Pass", full: "1. Serpentine Pass", prog: 0.05, phase: 1 },
+            { short: "2. Gateway", full: "2. Cattle Gateway", prog: 0.46, phase: 2 },
+            { short: "3. Village", full: "3. Ranch Village", prog: 0.65, phase: 3 },
+            { short: "4. Summit", full: "4. Summit Sanctuary", prog: 0.9, phase: 4 },
           ].map((btn) => (
             <button
-              key={btn.label}
+              key={btn.short}
               onClick={() => scrollToPhase(btn.prog)}
-              className={`px-3 py-1 rounded-full whitespace-nowrap transition-all border cursor-pointer ${
+              className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full whitespace-nowrap transition-all border cursor-pointer shrink-0 ${
                 activeWaypoint.phase === btn.phase
                   ? "bg-[#D99B35] text-[#1B3117] font-bold border-[#FFF9E6] shadow-md scale-105"
                   : "bg-[#18311B]/80 text-[#D8E6D3] border-[#44663B] hover:bg-[#284820] hover:text-[#FFF9E6]"
               }`}
             >
-              {btn.label}
+              <span className="sm:hidden">{btn.short}</span>
+              <span className="hidden sm:inline">{btn.full}</span>
             </button>
           ))}
         </div>
@@ -1018,14 +1177,14 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* STORYTELLING WAYPOINT CARD (REAL MODE ARCHITECTURAL STYLE) */}
+      {/* STORYTELLING WAYPOINT CARD (GLASSMORPHED REAL MODE STYLE)  */}
       {/* ========================================================= */}
       {!cinemaMode && scrollProgress < 0.82 && (
-        <div className="relative z-20 px-4 pb-4 md:px-8 md:pb-6 max-w-md pointer-events-none">
-          <div className="pointer-events-auto transition-all duration-300 bg-white border border-[#E5E5E5] rounded-none shadow-xl text-black">
+        <div className="relative z-20 px-4 pb-4 md:px-8 md:pb-6 max-w-md pointer-events-none hidden md:block">
+          <div className="pointer-events-auto transition-all duration-300 bg-white/35 backdrop-blur-md border border-white/60 rounded-none shadow-[0_20px_50px_rgba(0,0,0,0.3)] text-black">
             {/* Top Bar: Editorial Monospace Metadata */}
-            <div className="px-5 py-3 border-b border-[#EAE8E2] flex items-center justify-between">
-              <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold">
+            <div className="px-5 py-3 border-b border-black/15 flex items-center justify-between">
+              <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#5A3810] font-bold">
                 {activeWaypoint.badge}
               </div>
               <div className="flex items-center gap-2">
@@ -1034,7 +1193,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                 </span>
                 <button
                   onClick={() => setShowArchiveModal(true)}
-                  className="font-mono text-[9px] uppercase tracking-[0.2em] font-bold text-black hover:text-[#8C5E28] transition-colors cursor-pointer flex items-center gap-1 ml-1"
+                  className="font-mono text-[9px] uppercase tracking-[0.2em] font-bold text-black hover:text-[#5A3810] transition-colors cursor-pointer flex items-center gap-1 ml-1"
                   title="View full gallery"
                 >
                   <span className="hidden sm:inline">Gallery</span>
@@ -1046,25 +1205,25 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
             {/* Narrative Content */}
             <div className="p-5 space-y-3">
               <div>
-                <h2 className="font-display-ghibli text-xl md:text-2xl font-bold text-black tracking-tight uppercase leading-snug">
+                <h2 className="font-display-ghibli text-xl md:text-2xl font-bold text-black tracking-tight uppercase leading-snug drop-shadow-xs">
                   {activeWaypoint.title}
                 </h2>
-                <p className="font-serif-ghibli italic text-xs text-[#777777] mt-0.5">
+                <p className="font-serif-ghibli italic text-xs text-[#2A2A2A] mt-0.5">
                   {activeWaypoint.subtitle}
                 </p>
               </div>
 
-              <p className="text-xs leading-relaxed text-[#555555]">
+              <p className="text-xs leading-relaxed text-[#1A1A1A] font-medium">
                 {activeWaypoint.narrative}
               </p>
 
-              {/* Artwork Showcase (Real Mode Comparison/Chalet Card Geometry) */}
+              {/* Artwork Showcase (Real Mode Comparison/Chalet Card Geometry with Glass Layering) */}
               <div
                 onClick={() => setShowArchiveModal(true)}
-                className="border border-[#E5E5E5] bg-[#FBFBFA] p-3 rounded-none group cursor-pointer hover:border-black transition-colors"
+                className="border border-white/50 bg-white/30 backdrop-blur-sm p-3 rounded-none group cursor-pointer hover:border-black/50 transition-colors shadow-sm"
                 title="Click to open Studio Ghibli Art Gallery"
               >
-                <div className="h-32 sm:h-36 w-full overflow-hidden relative border border-[#E5E5E5] rounded-none bg-black">
+                <div className="h-32 sm:h-36 w-full overflow-hidden relative border border-white/60 rounded-none bg-black">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeWaypoint.ghibliImg}
@@ -1083,7 +1242,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                   <div className="font-display-ghibli text-sm font-bold text-black uppercase">
                     {activeWaypoint.photoLabel}
                   </div>
-                  <p className="text-[11px] text-[#666666] leading-snug mt-1 font-serif-ghibli italic">
+                  <p className="text-[11px] text-[#333333] leading-snug mt-1 font-serif-ghibli italic">
                     {activeWaypoint.artisticTransformation}
                   </p>
                 </div>
@@ -1103,7 +1262,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
               </div>
 
               {/* Minimalist Editorial Footer */}
-              <div className="pt-2.5 border-t border-[#EAE8E2] flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-[#888888]">
+              <div className="pt-2.5 border-t border-black/15 flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-[#333333] font-bold">
                 <span className="flex items-center gap-1">
                   Scroll to Ascend ↓
                 </span>
@@ -1117,35 +1276,35 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* PHASE 4: RESERVATION CARD (REAL MODE ARCHITECTURAL STYLE)  */}
+      {/* PHASE 4: RESERVATION CARD (GLASSMORPHED REAL MODE STYLE)  */}
       {/* ========================================================= */}
       {!cinemaMode && scrollProgress >= 0.82 && (
-        <div className="relative z-30 px-4 pb-6 md:px-8 md:pb-8 max-w-xl mx-auto w-full">
-          <div className="bg-white border border-[#E5E5E5] p-6 md:p-8 text-black rounded-none shadow-2xl transition-all duration-500">
+        <div className="relative z-30 px-3 sm:px-6 pb-6 md:px-8 md:pb-8 max-w-xl mx-auto w-full">
+          <div className="bg-white/50 backdrop-blur-lg border border-white/60 p-4 sm:p-6 md:p-8 text-black rounded-none shadow-[0_25px_60px_rgba(0,0,0,0.35)] transition-all duration-500">
             {!bookingConfirmed ? (
               <>
-                <div className="text-center mb-6 space-y-2">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#8C5E28] font-bold">
+                <div className="text-center mb-4 sm:mb-6 space-y-1.5 sm:space-y-2">
+                  <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#8C5E28] font-bold">
                     EXCLUSIVE HIGHLAND RESERVATION • 1,576M
                   </div>
-                  <h2 className="font-display-ghibli text-2xl md:text-3xl font-bold text-black tracking-tight uppercase">
+                  <h2 className="font-display-ghibli text-xl sm:text-2xl md:text-3xl font-bold text-black tracking-tight uppercase">
                     Reserve Your Mountain Sanctuary
                   </h2>
-                  <p className="font-serif-ghibli italic text-xs md:text-sm text-[#777777] max-w-md mx-auto">
+                  <p className="font-serif-ghibli italic text-[11px] sm:text-xs md:text-sm text-[#555555] max-w-md mx-auto">
                     Authentic cedar chalets on stilts with wrap-around balconies overlooking the morning clouds.
                   </p>
                 </div>
 
-                <form onSubmit={handleBookingSubmit} className="space-y-4">
+                <form onSubmit={handleBookingSubmit} className="space-y-3.5 sm:space-y-4">
                   <div>
-                    <label className="block font-mono text-[10px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1.5">
+                    <label className="block font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#8C5E28] font-bold mb-1 sm:mb-1.5">
                       Select Chalet Lodge
                     </label>
                     <select
                       id="select-chalet"
                       value={chaletType}
                       onChange={(e) => setChaletType(e.target.value)}
-                      className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-4 py-2.5 text-xs text-black font-medium focus:outline-none"
+                      className="w-full bg-white/70 backdrop-blur-sm border border-black/15 focus:border-black rounded-none px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs text-black font-medium focus:outline-none"
                     >
                       <option value="Mountain View Chalet">
                         Mountain View Chalet (2-Tier Cedar Lodge on Stilts)
@@ -1162,9 +1321,9 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                     </select>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
                     <div>
-                      <label className="block font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
+                      <label className="block font-mono text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-[#8C5E28]" /> Check In
                         </span>
@@ -1174,12 +1333,12 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                         type="date"
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
-                        className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none"
+                        className="w-full bg-white/70 backdrop-blur-sm border border-black/15 focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none min-h-[38px]"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
+                      <label className="block font-mono text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
                         <span className="flex items-center gap-1">
                           <Calendar className="w-3 h-3 text-[#8C5E28]" /> Check Out
                         </span>
@@ -1189,12 +1348,12 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                         type="date"
                         value={checkOutDate}
                         onChange={(e) => setCheckOutDate(e.target.value)}
-                        className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none"
+                        className="w-full bg-white/70 backdrop-blur-sm border border-black/15 focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none min-h-[38px]"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
+                      <label className="block font-mono text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
                         <span className="flex items-center gap-1">
                           <Users className="w-3 h-3 text-[#8C5E28]" /> Guests
                         </span>
@@ -1203,7 +1362,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                         id="select-guests"
                         value={guestsCount}
                         onChange={(e) => setGuestsCount(Number(e.target.value))}
-                        className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none"
+                        className="w-full bg-white/70 backdrop-blur-sm border border-black/15 focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none min-h-[38px]"
                       >
                         <option value={1}>1 Guest (Solo Retreat)</option>
                         <option value={2}>2 Guests (Highland Couple)</option>
@@ -1213,25 +1372,25 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-[#EAE8E2] space-y-2">
-                    <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold">
+                  <div className="pt-2.5 sm:pt-3 border-t border-black/10 space-y-2">
+                    <div className="font-mono text-[9px] uppercase tracking-[0.2em] sm:tracking-[0.25em] text-[#8C5E28] font-bold">
                       Curated Highland Inclusions
                     </div>
-                    <label className="flex items-center gap-2.5 text-xs text-[#555555] cursor-pointer">
+                    <label className="flex items-start sm:items-center gap-2.5 text-[11px] sm:text-xs text-[#555555] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={includeCableCar}
                         onChange={(e) => setIncludeCableCar(e.target.checked)}
-                        className="rounded-none border-[#AAAAAA] text-[#1B3416] focus:ring-0"
+                        className="rounded-none border-[#AAAAAA] text-[#1B3416] focus:ring-0 mt-0.5 sm:mt-0 shrink-0"
                       />
                       <span>Complimentary Obudu Cable Car Unlimited Pass (4.0km ride)</span>
                     </label>
-                    <label className="flex items-center gap-2.5 text-xs text-[#555555] cursor-pointer">
+                    <label className="flex items-start sm:items-center gap-2.5 text-[11px] sm:text-xs text-[#555555] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={includeCanopyWalk}
                         onChange={(e) => setIncludeCanopyWalk(e.target.checked)}
-                        className="rounded-none border-[#AAAAAA] text-[#1B3416] focus:ring-0"
+                        className="rounded-none border-[#AAAAAA] text-[#1B3416] focus:ring-0 mt-0.5 sm:mt-0 shrink-0"
                       />
                       <span>Becheve Nature Reserve & Canopy Walkway Guide</span>
                     </label>
@@ -1241,7 +1400,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                   <button
                     id="btn-reserve-sanctuary"
                     type="submit"
-                    className="w-full mt-4 py-3.5 px-6 bg-[#1B3416] hover:bg-[#284820] text-white border border-[#1B3416] font-mono font-bold text-xs uppercase tracking-[0.3em] transition-all rounded-none cursor-pointer shadow-md flex items-center justify-center gap-2"
+                    className="w-full mt-3.5 sm:mt-4 py-3 sm:py-3.5 px-4 sm:px-6 bg-[#1B3416] hover:bg-[#284820] text-white border border-[#1B3416] font-mono font-bold text-[11px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.3em] transition-all rounded-none cursor-pointer shadow-md flex items-center justify-center gap-2"
                   >
                     <span>Confirm Sanctuary Reservation</span>
                     <ArrowRight className="w-4 h-4 text-[#FAD59A]" />
@@ -1256,10 +1415,10 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                 <h3 className="font-display-ghibli text-2xl font-bold text-black uppercase">
                   Sanctuary Awaits You
                 </h3>
-                <p className="font-serif-ghibli italic text-xs text-[#666666] max-w-sm mx-auto">
+                <p className="font-serif-ghibli italic text-xs text-[#555555] max-w-sm mx-auto">
                   Your journey to the clouds is confirmed. A warm cedar fire and fresh highland cream tea are being prepared at {chaletType}.
                 </p>
-                <div className="bg-[#F8F7F3] p-3 text-xs text-[#8C5E28] font-mono border border-[#E5E5E5] max-w-xs mx-auto rounded-none font-bold uppercase tracking-wider">
+                <div className="bg-white/60 backdrop-blur-sm p-3 text-xs text-[#8C5E28] font-mono border border-black/10 max-w-xs mx-auto rounded-none font-bold uppercase tracking-wider">
                   Booking Ref: {bookingRef}
                 </div>
                 <button
@@ -1274,25 +1433,27 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
         </div>
       )}
 
-      {/* Floating Quick Mode Switcher Pill */}
+      {/* Floating Quick Mode Switcher Pill (Visible and responsive across all screens) */}
       {onSwitchToClassic && (
-        <div className="fixed bottom-14 right-6 z-30 hidden sm:block pointer-events-auto">
+        <div className="fixed bottom-14 right-4 sm:bottom-14 sm:right-6 z-30 pointer-events-auto">
           <button
             onClick={onSwitchToClassic}
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FCFBF7]/95 hover:bg-[#FCFBF7] text-[#1B3416] text-xs font-display-ghibli font-bold tracking-wider shadow-2xl border-2 border-[#D99B35] backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer group"
+            className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-[#FCFBF7]/95 hover:bg-[#FCFBF7] text-[#1B3416] text-[10px] sm:text-xs font-display-ghibli font-bold tracking-wider shadow-2xl border-2 border-[#D99B35] backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer group"
             title="Switch to Real-Life Normal Scroll Mode with authentic photography"
           >
-            <Mountain className="w-4 h-4 text-[#A87A24] group-hover:rotate-12 transition-transform" />
-            <span>Real-Life Mode</span>
+            <Mountain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#A87A24] group-hover:rotate-12 transition-transform shrink-0" />
+            <span className="hidden sm:inline">Real-Life Mode</span>
+            <span className="sm:hidden">Real-Life</span>
           </button>
         </div>
       )}
 
-      {/* Bottom Journey Timeline Track */}
-      <div className="relative z-20 px-6 py-2.5 md:px-10 bg-[#122414]/90 backdrop-blur-md border-t border-[#3B5A35] flex items-center justify-between text-xs text-[#C8DCBE]">
-        <div className="flex items-center gap-4">
-          <span className="font-display-ghibli font-semibold text-[#F6DDA8] tracking-wider text-[11px]">
-            JOURNEY PROGRESS
+      {/* Bottom Journey Timeline Track (Fully responsive on mobile) */}
+      <div className="relative z-20 px-3 py-2 sm:px-6 sm:py-2.5 md:px-10 bg-[#122414]/90 backdrop-blur-md border-t border-[#3B5A35] flex items-center justify-between text-xs text-[#C8DCBE]">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+          <span className="font-display-ghibli font-semibold text-[#F6DDA8] tracking-wider text-[10px] sm:text-[11px] whitespace-nowrap">
+            <span className="sm:hidden">PROGRESS</span>
+            <span className="hidden sm:inline">JOURNEY PROGRESS</span>
           </span>
           <div
             onClick={(e) => {
@@ -1301,7 +1462,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
               const newProg = Math.max(0, Math.min(1, clickX / rect.width));
               scrollToPhase(newProg);
             }}
-            className="w-32 md:w-56 h-2 bg-[#254427] rounded-full overflow-hidden border border-[#446C3F] cursor-pointer"
+            className="w-20 sm:w-32 md:w-56 h-1.5 sm:h-2 bg-[#254427] rounded-full overflow-hidden border border-[#446C3F] cursor-pointer shrink-0"
             title="Click anywhere to scrub journey"
           >
             <div
@@ -1311,10 +1472,10 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-[11px] font-mono text-[#D7E6CE]">
-          <span className="hidden sm:inline">11km Mountain Highway</span>
+        <div className="flex items-center gap-2 sm:gap-4 text-[10px] sm:text-[11px] font-mono text-[#D7E6CE] shrink-0">
+          <span className="hidden md:inline">11km Mountain Highway</span>
           <span className="text-[#F6DDA8] font-bold">
-            {Math.round(scrollProgress * 100)}% Completed
+            {Math.round(scrollProgress * 100)}%
           </span>
         </div>
       </div>
@@ -1323,34 +1484,34 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       {/* STUDIO GHIBLI HIGHLAND ART GALLERY MODAL (NO REAL PHOTOS)   */}
       {/* ========================================================= */}
       {showArchiveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#09150B]/90 backdrop-blur-md animate-fade-in">
-          <div className="bg-[#FCFAF4] text-[#1E361B] max-w-4xl w-full rounded-3xl shadow-2xl border-2 border-[#D99B35]/70 overflow-hidden flex flex-col max-h-[92vh]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 md:p-8 bg-[#09150B]/90 backdrop-blur-md animate-fade-in">
+          <div className="bg-[#FCFAF4] text-[#1E361B] max-w-4xl w-full rounded-2xl sm:rounded-3xl shadow-2xl border-2 border-[#D99B35]/70 overflow-hidden flex flex-col max-h-[92vh]">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-5 md:p-6 border-b border-[#E8DEC7] bg-gradient-to-r from-[#F6EEDC] to-[#EFE2C8]">
+            <div className="flex items-center justify-between p-4 sm:p-5 md:p-6 border-b border-[#E8DEC7] bg-gradient-to-r from-[#F6EEDC] to-[#EFE2C8] gap-3">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B3416] text-[#FBEBC8] text-[10px] font-bold tracking-widest uppercase mb-1.5 border border-[#D99B35]/40">
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B3416] text-[#FBEBC8] text-[9px] sm:text-[10px] font-bold tracking-widest uppercase mb-1 sm:mb-1.5 border border-[#D99B35]/40">
                   <Palette className="w-3 h-3 text-[#E5B853]" />
                   Art Collection
                 </div>
-                <h3 className="font-display-ghibli text-2xl md:text-3xl font-bold text-[#142A12]">
+                <h3 className="font-display-ghibli text-lg sm:text-2xl md:text-3xl font-bold text-[#142A12] leading-tight">
                   The Obudu Highland Art Gallery
                 </h3>
-                <p className="font-serif-ghibli italic text-xs md:text-sm text-[#7D5422] mt-0.5">
+                <p className="font-serif-ghibli italic text-[11px] sm:text-xs md:text-sm text-[#7D5422] mt-0.5 line-clamp-1 sm:line-clamp-none">
                   A visual journey across Cross River&apos;s mystical heights, rendered in hand-painted Studio Ghibli gouache.
                 </p>
               </div>
               <button
                 id="btn-close-modal"
                 onClick={() => setShowArchiveModal(false)}
-                className="w-10 h-10 rounded-full bg-[#1B3416] text-[#FFF9E6] hover:bg-[#2A4C24] flex items-center justify-center transition-colors cursor-pointer shadow-md"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#1B3416] text-[#FFF9E6] hover:bg-[#2A4C24] flex items-center justify-center transition-colors cursor-pointer shadow-md shrink-0"
                 title="Close Gallery"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
             {/* Gallery Artworks List */}
-            <div className="p-5 md:p-6 overflow-y-auto space-y-8 bg-[#FCFAF4]">
+            <div className="p-3.5 sm:p-5 md:p-6 overflow-y-auto space-y-6 sm:space-y-8 bg-[#FCFAF4]">
               {PHOTO_ARCHIVE.map((item, idx) => (
                 <div
                   key={idx}
