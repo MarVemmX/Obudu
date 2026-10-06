@@ -410,7 +410,7 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       );
     };
 
-    // Touch Support
+    // Touch Support (Tuned for smooth, cinematic mobile ascent)
     let touchStartY = 0;
     const handleTouchStart = (e: TouchEvent) => {
       touchStartY = e.touches[0].clientY;
@@ -422,7 +422,8 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       const touchCurrentY = e.touches[0].clientY;
       const deltaY = touchStartY - touchCurrentY;
       touchStartY = touchCurrentY;
-      const delta = deltaY * 0.0012;
+      // Refined multiplier so mobile swipes feel natural and controlled without racing through the road
+      const delta = deltaY * 0.00048;
       targetProgressRef.current = Math.max(
         0,
         Math.min(1, targetProgressRef.current + delta)
