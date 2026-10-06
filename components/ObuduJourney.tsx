@@ -101,8 +101,6 @@ interface StoryWaypoint {
   narrative: string;
   badge: string;
   ghibliImg: string;
-  realImg: string;
-  photoName: string;
   photoLabel: string;
   artisticTransformation: string;
 }
@@ -120,11 +118,9 @@ const STORY_WAYPOINTS: StoryWaypoint[] = [
       "Leaving the tropical lowlands of Cross River below, our vintage safari 4x4 embarks on the legendary 11km serpentine road. Ahead lie 22 hairpin bends carved into sheer emerald cliffs.",
     badge: "Phase I • 0 – 3.2km",
     ghibliImg: "/images/ghibli-road.jpg",
-    realImg: "/images/obudu road.jpg",
-    photoName: "obudu road.jpg",
     photoLabel: "The 11km Serpentine Road",
     artisticTransformation:
-      "Captured from obudu road.jpg: Notice the white concrete safety curb blocks guarding the cliff edge, the sweeping tarmac curve, and the lush emerald slope overlooking distant misty blue mountain ranges.",
+      "Whitewashed safety curb stones trace the sheer cliff edge, as the smooth asphalt curves upward overlooking endless misty mountain ridges.",
   },
   {
     id: "devils-elbow",
@@ -138,11 +134,9 @@ const STORY_WAYPOINTS: StoryWaypoint[] = [
       "The asphalt hugs vertiginous ridges where safety curb stones guard the rim. Looking out beyond the cliff reveals endless misty blue mountain layers and cascading waterfalls.",
     badge: "Phase I • 6.4km",
     ghibliImg: "/images/ghibli-road.jpg",
-    realImg: "/images/obudu road.jpg",
-    photoName: "obudu road.jpg",
     photoLabel: "Serpentine Cliffside Edge",
     artisticTransformation:
-      "Faithfully translated into Studio Ghibli gouache: Luminous sky with billowing cumulus clouds, hand-painted wild flowers on the cliffside, and deep atmospheric blue ridges.",
+      "Painted in luminous gouache tones: Billowing summer cumulus clouds, wild highland cliff flowers, and deep cobalt ridges dissolving into mountain mists.",
   },
   {
     id: "gateway-crest",
@@ -156,11 +150,9 @@ const STORY_WAYPOINTS: StoryWaypoint[] = [
       "Crowning the mountain crest, we pass beneath the sacred dry-stone pillars and hand-carved Bull Head archway. Here our vintage 4x4 morphs in a cloud of Ghibli magic into the open-air highland ranch tour bus.",
     badge: "Phase II • Gateway Morph",
     ghibliImg: "/images/ghibli-entrance.jpg",
-    realImg: "/images/obudu entrance.jpg",
-    photoName: "obudu entrance.jpg",
     photoLabel: "The Cattle Head Gateway",
     artisticTransformation:
-      "Drawn directly from obudu entrance.jpg: The iconic granite masonry pillars, rustic timber crossbeams, and the giant sculpted Bull Head with magnificent long horns guarding the mountain portal.",
+      "Hand-dressed granite masonry pillars and heavy cedar crossbeams frame the sacred horned Bull Head guarding the portal to the high plateau.",
   },
   {
     id: "highland-skyway",
@@ -174,11 +166,9 @@ const STORY_WAYPOINTS: StoryWaypoint[] = [
       "Gentle White Fulani cattle graze across chartreuse meadows by the village cottages. Above us, Africa's longest cable car glides like a red and gold jewel through drifting mountain mists.",
     badge: "Phase III • Ranch Exploration",
     ghibliImg: "/images/ghibli-village.jpg",
-    realImg: "/images/obudu.jpeg",
-    photoName: "obudu.jpeg",
     photoLabel: "Ranch Village Panorama",
     artisticTransformation:
-      "Painted from obudu.jpeg: The winding driveway curving between clusters of two-tier chalets on stilts with dark hipped roofs, vintage streetlamps, and rolling green hills with pine groves.",
+      "Winding driveways curve past clusters of two-tier chalets on stilts, vintage streetlamps, and White Fulani cattle in rolling green meadows.",
   },
   {
     id: "sanctuary-arrival",
@@ -192,47 +182,64 @@ const STORY_WAYPOINTS: StoryWaypoint[] = [
       "The tour bus pulls up to the cedar and stone chalets perched on stilts above the cloudline. Crackling hearths, fresh dairy, and ancient stillness await at your sanctuary.",
     badge: "Phase IV • Arrival Sanctuary",
     ghibliImg: "/images/ghibli-chalets.jpg",
-    realImg: "/images/obudu 2.webp",
-    photoName: "obudu 2.webp",
     photoLabel: "Plateau Chalets on Stilts",
     artisticTransformation:
-      "Inspired by the aerial vista of obudu 2.webp: Two-tier terracotta chalets elevated on black stilts with balconies overlooking vast panoramic blue mountain horizons in morning light.",
+      "Two-tier terracotta chalets elevated on stilts above the cloudline, with wrap-around balconies commanding panoramic sunrise vistas.",
   },
 ];
 
-// Reference photos archival gallery
-const PHOTO_ARCHIVE = [
+// Highland Studio Ghibli Art Gallery Collection
+interface GalleryArtwork {
+  id: string;
+  title: string;
+  subtitle: string;
+  elevation: string;
+  ghibliSrc: string;
+  atmosphere: string;
+  tags: string[];
+  desc: string;
+}
+
+const PHOTO_ARCHIVE: GalleryArtwork[] = [
   {
     id: "ref-road",
     title: "The 11km Serpentine Road",
     subtitle: "Engineering Marvel of 1951 • 22 Hairpin Turns",
-    realSrc: "/images/obudu road.jpg",
+    elevation: "780m – 1,240m",
     ghibliSrc: "/images/ghibli-road.jpg",
-    desc: "The authentic 11km mountain highway carved into sheer cliffs, featuring signature white concrete barrier curb blocks guarding the drop, translated into lush Ghibli gouache with emerald hills and distant blue ridges.",
+    atmosphere: "Luminous morning sunlight breaking through drifting mountain mists",
+    tags: ["22 Hairpin Bends", "Emerald Cliff Drops", "White Curb Guardstones", "Cobalt Horizon"],
+    desc: "A breathtaking ascent winding up the precipitous cliffs of Cross River. The smooth asphalt ribbon is guarded by signature white barrier curbs, looking outward toward endless layers of atmospheric blue mountain ridges bathed in golden Ghibli gouache.",
   },
   {
     id: "ref-entrance",
     title: "The Cattle Head Archway",
-    subtitle: "Iconic Ranch Portal • Granite & Bronze",
-    realSrc: "/images/obudu entrance.jpg",
+    subtitle: "Sacred Highland Gateway • Ridge Crest Portal",
+    elevation: "1,480m",
     ghibliSrc: "/images/ghibli-entrance.jpg",
-    desc: "The authentic dry-stone masonry pillars and giant sculpted Bull Head with magnificent horns guarding the gateway to the high plateau, under which our vehicle passes to begin the highland tour.",
+    atmosphere: "Brisk alpine breeze with billowing cumulus clouds over verdant peaks",
+    tags: ["Granite Ashlar Masonry", "Rustic Timber Crossbeams", "Sacred Horned Bull", "Highland Portal"],
+    desc: "Crowning the ridge summit, the historic entrance archway stands flanked by dry-stone granite pillars and heavy cedar crossbeams. The magnificent sculpted Bull Head watches over travelers as the road passes from the lowlands into the mystical high plateau.",
   },
   {
     id: "ref-village",
-    title: "Ranch Village Panorama",
-    subtitle: "Village Green, Cottages & Cableway",
-    realSrc: "/images/obudu.jpeg",
+    title: "The Plateau Ranch Village",
+    subtitle: "Highland Pastures, Stone Cottages & Skyway",
+    elevation: "1,550m",
     ghibliSrc: "/images/ghibli-village.jpg",
-    desc: "The historic ranch layout where roads curve between clusters of two-tier chalets on stilts, vintage streetlamps, White Fulani cattle grazing in pastures, and Africa's longest cableway overhead.",
+    atmosphere: "Crisp mountain air, gentle cowbells, and wandering mists among pine groves",
+    tags: ["Two-Tier Chalets", "White Fulani Pastures", "Aerial Cableway", "Winding Driveways"],
+    desc: "A timeless highland sanctuary where winding stone roads curve gently through chartreuse meadows. White Fulani cattle graze peacefully beside cedar-shingled cottages on stilts, while Africa's longest cable car glides overhead through swirling clouds.",
   },
   {
     id: "ref-chalets",
     title: "Highland Chalets on Stilts",
-    subtitle: "Summit Plateau Ridge • 1,576m Elevation",
-    realSrc: "/images/obudu 2.webp",
+    subtitle: "Summit Sanctuary Lodges • Ridge Overlook",
+    elevation: "1,576m Summit",
     ghibliSrc: "/images/ghibli-chalets.jpg",
-    desc: "The aerial view of two-tier cedar chalets on stilts with wrap-around balconies and dark hipped roofs, overlooking endless violet-blue mountain horizons in pure Studio Ghibli morning light.",
+    atmosphere: "Pure dawn twilight with violet and amber gradients across endless mountain seas",
+    tags: ["Stilt Architecture", "Wrap-around Balconies", "Cedar & Terracotta", "Summit Ridge"],
+    desc: "Perched gracefully on stilts along the edge of the plateau, these two-tier chalets command panoramic views above the clouds. Wrap-around balconies catch the earliest morning sunlight as the vast Nigerian-Cameroon highlands stretch out into infinity.",
   },
 ];
 
@@ -280,7 +287,6 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
   const [activeWaypoint, setActiveWaypoint] = useState<StoryWaypoint>(
     STORY_WAYPOINTS[0]
   );
-  const [cardPhotoTab, setCardPhotoTab] = useState<"ghibli" | "real">("ghibli");
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
   const [cinemaMode, setCinemaMode] = useState(false);
@@ -902,15 +908,15 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
               </span>
             </button>
 
-            {/* Archival Records Modal */}
+            {/* Art Gallery Modal */}
             <button
               id="btn-archive-photos"
               onClick={() => setShowArchiveModal(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1B3416]/85 hover:bg-[#284820] border border-[#D99B35]/50 text-[#F6DDA8] text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md cursor-pointer"
-              title="Compare real archival photographs with Studio Ghibli hand-painted artwork"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#1B3416]/85 hover:bg-[#284820] border border-[#D99B35]/50 text-[#F6DDA8] text-xs font-medium tracking-wide transition-all shadow-md backdrop-blur-md cursor-pointer hover:scale-105 active:scale-95"
+              title="Explore the hand-painted Studio Ghibli art collection of Obudu"
             >
-              <Camera className="w-3.5 h-3.5 text-[#E5B853]" />
-              <span className="hidden sm:inline">Archival Records</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#E5B853]" />
+              <span className="hidden sm:inline">Art Gallery</span>
             </button>
 
             {/* Audio Toggle */}
@@ -1011,107 +1017,93 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* STORYTELLING WAYPOINT CARD WITH LIVE PHOTO EXPERIENCE      */}
+      {/* STORYTELLING WAYPOINT & FIELD GUIDE CARD                   */}
       {/* ========================================================= */}
       {!cinemaMode && scrollProgress < 0.82 && (
-        <div className="relative z-20 px-6 pb-6 md:px-10 md:pb-8 max-w-xl pointer-events-none">
-          <div className="bg-[#FCFBF7] text-[#284820] p-5 md:p-6 rounded-2xl shadow-2xl border-2 border-[#D99B35]/50 pointer-events-auto transition-all duration-300">
-            <div className="flex items-center justify-between gap-2 mb-2">
+        <div className="relative z-20 px-4 pb-4 md:px-8 md:pb-6 max-w-lg pointer-events-none">
+          <div className="pointer-events-auto transition-all duration-300 rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(10,26,12,0.45)] border border-[#E5C37A]/40 bg-gradient-to-b from-[#FCFAF4]/96 via-[#F7F2E4]/96 to-[#F0E8D2]/96 backdrop-blur-xl text-[#1E361B] ring-1 ring-black/5">
+            {/* Top Bar: Phase Badge & Elevation */}
+            <div className="flex items-center justify-between gap-3 px-5 pt-4 pb-2.5 border-b border-[#E8DEC7]/80">
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold tracking-widest uppercase px-2.5 py-0.5 rounded-full bg-[#284820] text-[#FFF9E6]">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-[#1A3115] text-[#FBEBC8] shadow-sm border border-[#D99B35]/40">
+                  <Sparkles className="w-3 h-3 text-[#E5B853]" />
                   {activeWaypoint.badge}
                 </span>
-                <span className="text-xs font-semibold text-[#8C5E28] flex items-center gap-1">
-                  <Compass className="w-3 h-3" />
+                <span className="text-[11px] font-semibold text-[#8B5A24] flex items-center gap-1 bg-[#EFE5D0]/80 px-2.5 py-0.5 rounded-full border border-[#DFD1B8]">
+                  <Mountain className="w-3 h-3 text-[#A87A24]" />
                   {activeWaypoint.altitude}
                 </span>
               </div>
-
-              {/* Ghibli Art vs Real Photo Toggle Pills */}
-              <div className="flex items-center bg-[#EDE3CE] p-0.5 rounded-full border border-[#D5C5A8]">
-                <button
-                  onClick={() => setCardPhotoTab("ghibli")}
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
-                    cardPhotoTab === "ghibli"
-                      ? "bg-[#284820] text-[#FFF9E6] shadow-sm"
-                      : "text-[#6B522E] hover:text-[#1B3416]"
-                  }`}
-                >
-                  🎨 Ghibli
-                </button>
-                <button
-                  onClick={() => setCardPhotoTab("real")}
-                  className={`px-2 py-0.5 rounded-full text-[10px] font-bold transition-all cursor-pointer ${
-                    cardPhotoTab === "real"
-                      ? "bg-[#284820] text-[#FFF9E6] shadow-sm"
-                      : "text-[#6B522E] hover:text-[#1B3416]"
-                  }`}
-                >
-                  📷 Real Photo
-                </button>
-              </div>
+              <button
+                onClick={() => setShowArchiveModal(true)}
+                className="flex items-center gap-1 text-[11px] font-bold text-[#8C5C26] hover:text-[#183116] transition-colors cursor-pointer group"
+                title="View full Studio Ghibli art gallery"
+              >
+                <span className="hidden sm:inline">Gallery</span>
+                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </button>
             </div>
 
-            <h2 className="font-display-ghibli text-xl md:text-2xl font-bold text-[#1A3115] tracking-tight mb-1">
-              {activeWaypoint.title}
-            </h2>
-            <p className="font-serif-ghibli italic text-xs md:text-sm text-[#875F2A] mb-2">
-              {activeWaypoint.subtitle}
-            </p>
-
-            <p className="font-serif-ghibli text-sm leading-relaxed text-[#2D3F2B] mb-3">
-              {activeWaypoint.narrative}
-            </p>
-
-            {/* LIVE PHOTO REFERENCE */}
-            <div
-              onClick={() => setShowArchiveModal(true)}
-              className="p-3 rounded-xl bg-[#F5EEDF] border border-[#D5C9B0] flex items-center gap-3 cursor-pointer hover:bg-[#EFE6D2] transition-colors group shadow-sm"
-              title="Click to view full archival records"
-            >
-              <div className="w-20 h-16 rounded-lg overflow-hidden bg-[#243522] shrink-0 border border-[#C5B79B] relative">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={
-                    cardPhotoTab === "ghibli"
-                      ? activeWaypoint.ghibliImg
-                      : activeWaypoint.realImg
-                  }
-                  alt={activeWaypoint.photoLabel}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute bottom-1 right-1 px-1.5 py-0.2 rounded bg-black/60 text-[#FFF9E6] text-[8px] font-mono">
-                  {cardPhotoTab === "ghibli" ? "GHIBLI" : "REAL"}
-                </div>
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between text-[10px] uppercase font-bold text-[#8C5E28]">
-                  <span className="flex items-center gap-1">
-                    <Camera className="w-3 h-3 text-[#A87A24]" />
-                    {activeWaypoint.photoName}
-                  </span>
-                  <span className="text-[#284820] underline group-hover:translate-x-0.5 transition-transform inline-flex items-center">
-                    Full Gallery <ChevronRight className="w-3 h-3" />
-                  </span>
-                </div>
-                <div className="text-xs font-semibold text-[#1B3416] truncate font-display-ghibli mt-0.5">
-                  {activeWaypoint.photoLabel}
-                </div>
-                <p className="text-[10px] text-[#5A7352] line-clamp-2 mt-0.5 leading-snug">
-                  {activeWaypoint.artisticTransformation}
+            {/* Narrative Body */}
+            <div className="p-5 md:p-6 space-y-3">
+              <div>
+                <h2 className="font-display-ghibli text-2xl md:text-[26px] font-bold text-[#142911] tracking-tight leading-tight">
+                  {activeWaypoint.title}
+                </h2>
+                <p className="font-serif-ghibli italic text-xs md:text-sm text-[#875822] mt-0.5 font-medium">
+                  {activeWaypoint.subtitle}
                 </p>
               </div>
-            </div>
 
-            <div className="mt-3 pt-2.5 border-t border-[#E5DECD] flex items-center justify-between text-xs text-[#7A8E74]">
-              <span className="flex items-center gap-1.5 italic text-[#2E4A28] font-medium">
-                <ChevronDown className="w-4 h-4 text-[#A87A24] animate-bounce" />
-                Scroll down to ascend the 22 bends...
-              </span>
-              <span className="font-mono text-[11px] text-[#9A7A38]">
-                {Math.round(scrollProgress * 100)}% ascended
-              </span>
+              <p className="font-serif-ghibli text-[13.5px] leading-relaxed text-[#2B3E28]">
+                {activeWaypoint.narrative}
+              </p>
+
+              {/* Ghibli Art Field Study Showcase (Clean, Evocative, No Filenames) */}
+              <div
+                onClick={() => setShowArchiveModal(true)}
+                className="p-3 rounded-2xl bg-gradient-to-r from-[#F0E6D0] to-[#E9DEC4] border border-[#D9CBAE] hover:border-[#C4A968] flex items-center gap-3.5 cursor-pointer transition-all duration-200 group shadow-sm hover:shadow-md"
+                title="Click to explore the Ghibli Art Gallery"
+              >
+                <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#1E2E1D] shrink-0 border border-[#C5B490] relative shadow-inner">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={activeWaypoint.ghibliImg}
+                    alt={activeWaypoint.photoLabel}
+                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                </div>
+
+                <div className="flex-1 min-w-0 space-y-1">
+                  <div className="flex items-center justify-between text-[10px] font-bold text-[#8C5A24] uppercase tracking-wider">
+                    <span className="flex items-center gap-1">
+                      <Sparkles className="w-3 h-3 text-[#D99B35]" />
+                      Ghibli Field Study
+                    </span>
+                    <span className="text-[#1D351A] font-semibold underline underline-offset-2 flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform text-[10px]">
+                      Explore Art <ChevronRight className="w-3 h-3" />
+                    </span>
+                  </div>
+                  <div className="text-xs font-bold text-[#152B13] truncate font-display-ghibli">
+                    {activeWaypoint.photoLabel}
+                  </div>
+                  <p className="text-[11px] text-[#4F6849] line-clamp-2 leading-snug font-serif-ghibli">
+                    {activeWaypoint.artisticTransformation}
+                  </p>
+                </div>
+              </div>
+
+              {/* Scroll Guide Footer */}
+              <div className="pt-2 border-t border-[#E8DEC7]/80 flex items-center justify-between text-[11px] text-[#637C5E]">
+                <span className="flex items-center gap-1.5 italic text-[#243E20] font-medium">
+                  <ChevronDown className="w-3.5 h-3.5 text-[#B3832B] animate-bounce" />
+                  Scroll down to ascend through the pass...
+                </span>
+                <span className="font-mono text-[10.5px] font-bold text-[#8A5B22] bg-[#EFE5D0]/80 px-2 py-0.5 rounded-full border border-[#DFD1B8]">
+                  {Math.round(scrollProgress * 100)}% Ascended
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -1321,95 +1313,114 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       </div>
 
       {/* ========================================================= */}
-      {/* ARCHIVAL PHOTOGRAPHS & STUDIO GHIBLI GALLERY MODAL         */}
+      {/* STUDIO GHIBLI HIGHLAND ART GALLERY MODAL (NO REAL PHOTOS)   */}
       {/* ========================================================= */}
       {showArchiveModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#0E1A10]/90 backdrop-blur-md animate-fade-in">
-          <div className="bg-[#FCFBF7] text-[#284820] max-w-5xl w-full rounded-2xl shadow-2xl border-2 border-[#D99B35] overflow-hidden flex flex-col max-h-[92vh]">
-            <div className="flex items-center justify-between p-5 md:p-6 border-b border-[#E8DFC9] bg-[#F6EEDC]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8 bg-[#09150B]/90 backdrop-blur-md animate-fade-in">
+          <div className="bg-[#FCFAF4] text-[#1E361B] max-w-4xl w-full rounded-3xl shadow-2xl border-2 border-[#D99B35]/70 overflow-hidden flex flex-col max-h-[92vh]">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-5 md:p-6 border-b border-[#E8DEC7] bg-gradient-to-r from-[#F6EEDC] to-[#EFE2C8]">
               <div>
-                <h3 className="font-display-ghibli text-xl md:text-2xl font-bold text-[#1B3416]">
-                  Archival Records & Studio Ghibli Artworks
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B3416] text-[#FBEBC8] text-[10px] font-bold tracking-widest uppercase mb-1.5 border border-[#D99B35]/40">
+                  <Sparkles className="w-3 h-3 text-[#E5B853]" />
+                  Art Collection
+                </div>
+                <h3 className="font-display-ghibli text-2xl md:text-3xl font-bold text-[#142A12]">
+                  The Obudu Highland Art Gallery
                 </h3>
-                <p className="font-serif-ghibli italic text-xs md:text-sm text-[#7D5A2B]">
-                  Side-by-side comparison: Authentic historical photos translated into hand-painted Ghibli gouache.
+                <p className="font-serif-ghibli italic text-xs md:text-sm text-[#7D5422] mt-0.5">
+                  A visual journey across Cross River&apos;s mystical heights, rendered in hand-painted Studio Ghibli gouache.
                 </p>
               </div>
               <button
                 id="btn-close-modal"
                 onClick={() => setShowArchiveModal(false)}
-                className="w-9 h-9 rounded-full bg-[#284820] text-[#FFF9E6] hover:bg-[#1A3115] flex items-center justify-center transition-colors cursor-pointer"
+                className="w-10 h-10 rounded-full bg-[#1B3416] text-[#FFF9E6] hover:bg-[#2A4C24] flex items-center justify-center transition-colors cursor-pointer shadow-md"
+                title="Close Gallery"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
-            <div className="p-5 md:p-6 overflow-y-auto space-y-8 bg-[#FCFBF7]">
+            {/* Gallery Artworks List */}
+            <div className="p-5 md:p-6 overflow-y-auto space-y-8 bg-[#FCFAF4]">
               {PHOTO_ARCHIVE.map((item, idx) => (
                 <div
                   key={idx}
-                  className="bg-[#F8F3E6] rounded-xl overflow-hidden border border-[#DCD0B7] shadow-md p-4 md:p-5"
+                  className="bg-[#F6EEDC]/80 rounded-2xl overflow-hidden border border-[#DCD0B7] shadow-sm hover:shadow-md transition-shadow p-5 md:p-6 space-y-4"
                 >
-                  <div className="mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#284820] text-[#FFF9E6]">
-                        Record 0{idx + 1}
+                  {/* Artwork Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 border-b border-[#E5DAC0]">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#1B3416] text-[#FFF9E6]">
+                          Painting 0{idx + 1}
+                        </span>
+                        <h4 className="font-display-ghibli font-bold text-xl md:text-2xl text-[#142911]">
+                          {item.title}
+                        </h4>
+                      </div>
+                      <p className="font-serif-ghibli italic text-xs md:text-sm text-[#825520] mt-0.5">
+                        {item.subtitle}
+                      </p>
+                    </div>
+                    <span className="inline-flex items-center gap-1 self-start sm:self-center px-3 py-1 rounded-full bg-[#EFE2C8] text-[#784A1A] text-xs font-semibold border border-[#D8C7A5]">
+                      <Mountain className="w-3.5 h-3.5 text-[#A87A24]" />
+                      {item.elevation}
+                    </span>
+                  </div>
+
+                  {/* Panoramic Artwork Showcase Canvas */}
+                  <div className="relative rounded-2xl overflow-hidden border-2 border-[#D99B35]/40 bg-[#162916] shadow-lg group">
+                    <div className="h-64 sm:h-80 md:h-96 w-full overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.ghibliSrc}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                      />
+                    </div>
+                    <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#18311B]/90 backdrop-blur-md text-[#FBEBC8] text-[10px] font-bold tracking-widest uppercase border border-[#D99B35]/40 shadow-md flex items-center gap-1.5">
+                      <Sparkles className="w-3 h-3 text-[#E5B853]" />
+                      Studio Ghibli Gouache
+                    </div>
+                    <div className="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-[#142614]/85 backdrop-blur-md border border-[#44663B]/60 text-[#F5EDE0] text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                      <span className="font-serif-ghibli italic text-xs text-[#E3D4B8]">
+                        ✦ {item.atmosphere}
                       </span>
-                      <h4 className="font-display-ghibli font-bold text-lg text-[#1A3115]">
-                        {item.title}
-                      </h4>
                     </div>
-                    <p className="font-serif-ghibli italic text-xs text-[#875F2A] mt-0.5">
-                      {item.subtitle}
+                  </div>
+
+                  {/* Artwork Story & Scenic Tags */}
+                  <div className="space-y-2 pt-1">
+                    <p className="font-serif-ghibli text-[13.5px] text-[#2C402A] leading-relaxed">
+                      {item.desc}
                     </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="rounded-lg overflow-hidden border border-[#C5B79B] bg-[#1E2E20] relative group">
-                      <div className="h-56 sm:h-64 overflow-hidden">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={item.realSrc}
-                          alt={`${item.title} Real Photo`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-black/70 text-[#FFF9E6] text-[10px] font-mono tracking-wider">
-                        📷 AUTHENTIC REFERENCE PHOTO
-                      </div>
-                    </div>
-
-                    <div className="rounded-lg overflow-hidden border border-[#D99B35] bg-[#1E2E20] relative group">
-                      <div className="h-56 sm:h-64 overflow-hidden">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={item.ghibliSrc}
-                          alt={`${item.title} Ghibli Artwork`}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
-                      <div className="absolute top-2 left-2 px-2 py-0.5 rounded bg-[#284820]/90 text-[#F6DDA8] text-[10px] font-mono tracking-wider border border-[#D99B35]/40">
-                        🎨 STUDIO GHIBLI GOUACHE ARTWORK
-                      </div>
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {item.tags.map((tag, tIdx) => (
+                        <span
+                          key={tIdx}
+                          className="px-2.5 py-0.5 rounded-full text-[10.5px] font-medium bg-[#ECE0C6] text-[#5A3E1D] border border-[#D5C29F]"
+                        >
+                          {tag}
+                        </span>
+                      ))}
                     </div>
                   </div>
-
-                  <p className="text-xs text-[#3E553A] leading-relaxed mt-3 pt-2.5 border-t border-[#E2D6C0]">
-                    {item.desc}
-                  </p>
                 </div>
               ))}
             </div>
 
-            <div className="p-4 bg-[#F6EEDC] border-t border-[#E8DFC9] flex items-center justify-between text-xs text-[#6B5433]">
-              <span>
-                Obudu Cattle Ranch • Established 1951 by M. McCaughley, Hugh Jones, & Dr. Crawfield
+            {/* Modal Footer */}
+            <div className="p-4 md:p-5 bg-gradient-to-r from-[#F6EEDC] to-[#EFE2C8] border-t border-[#E8DEC7] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#6B5433]">
+              <span className="font-serif-ghibli italic text-center sm:text-left">
+                Studio Ghibli Aesthetic Expedition • Obudu Mountain Resort • 1,576m Summit
               </span>
               <button
                 onClick={() => setShowArchiveModal(false)}
-                className="px-4 py-1.5 rounded-lg bg-[#284820] text-[#FFFDF8] font-medium hover:bg-[#1B3416] transition-colors cursor-pointer"
+                className="px-5 py-2 rounded-xl bg-[#1B3416] text-[#FFFDF8] font-medium hover:bg-[#284820] transition-colors cursor-pointer shadow-md"
               >
-                Return to Journey
+                Return to Mountain Journey
               </button>
             </div>
           </div>

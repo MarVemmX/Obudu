@@ -896,7 +896,7 @@ export const ClassicLandingPage: React.FC<ClassicLandingPageProps> = ({
               Highland Chalets on Stilts
             </h2>
             <p className="font-serif-ghibli italic text-base md:text-lg text-[#666666]">
-              Inspired by the authentic aerial vista of obudu 2.webp
+              Inspired by the authentic aerial vista of the high plateau chalets
             </p>
             <p className="text-xs md:text-sm text-[#555555] max-w-xl mx-auto">
               Perched on black stilts along the plateau ridge, each chalet features wrap-around balconies overlooking endless blue mountain ranges that melt into the misty horizon.
