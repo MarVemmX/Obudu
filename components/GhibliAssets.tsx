@@ -702,61 +702,61 @@ export const IconicObuduEntranceBase: React.FC<{
   return (
     <g transform={`translate(${x}, ${y}) scale(${scale})`}>
       {/* Broad Flagstone Arrival Plaza Base beneath Road */}
-      <ellipse cx="0" cy="0" rx="340" ry="80" fill="#3A6332" opacity="0.6" />
-      <ellipse cx="0" cy="0" rx="320" ry="60" fill="#6B665A" opacity="0.45" />
+      <ellipse cx="0" cy="0" rx="360" ry="84" fill="#3A6332" opacity="0.6" />
+      <ellipse cx="0" cy="0" rx="340" ry="64" fill="#6B665A" opacity="0.45" />
 
       {/* Flagstone Cobblestones Plaza */}
-      <rect x="-240" y="-45" width="480" height="90" rx="12" fill="#756E61" stroke="#4E483D" strokeWidth="2" opacity="0.75" />
+      <rect x="-260" y="-45" width="520" height="90" rx="12" fill="#756E61" stroke="#4E483D" strokeWidth="2" opacity="0.75" />
 
       {/* Decorative Welcome Flowerbeds flanking the approach */}
-      <ellipse cx="-180" cy="20" rx="40" ry="16" fill="#254F22" />
-      <ellipse cx="180" cy="20" rx="40" ry="16" fill="#254F22" />
-      {[-195, -180, -165].map((fx, idx) => (
+      <ellipse cx="-220" cy="20" rx="42" ry="16" fill="#254F22" />
+      <ellipse cx="220" cy="20" rx="42" ry="16" fill="#254F22" />
+      {[-235, -220, -205].map((fx, idx) => (
         <circle key={`fl-${idx}`} cx={fx} cy={16} r="4" fill="#E85A5A" />
       ))}
-      {[165, 180, 195].map((fx, idx) => (
+      {[205, 220, 235].map((fx, idx) => (
         <circle key={`fr-${idx}`} cx={fx} cy={16} r="4" fill="#F5B73B" />
       ))}
 
-      {/* LEFT STONE PILLAR (Flanks the road on West side at x = -130 from center road) */}
-      <g id="entrance-pillar-left" transform="translate(-160, -60)">
-        <rect x="0" y="0" width="80" height="120" rx="4" fill="#5F594D" stroke="#3D372E" strokeWidth="2.5" />
+      {/* LEFT STONE PILLAR (Flanks the road on West side at x = -200 to -128) */}
+      <g id="entrance-pillar-left" transform="translate(-200, -60)">
+        <rect x="0" y="0" width="72" height="120" rx="4" fill="#5F594D" stroke="#3D372E" strokeWidth="2.5" />
         {/* Ashlar Stone Masonry Courses */}
         {[
-          { x: 4, y: 6, w: 34, h: 20, c: "#7C7567" },
-          { x: 42, y: 6, w: 34, h: 20, c: "#6A6356" },
-          { x: 4, y: 30, w: 44, h: 22, c: "#8C8474" },
-          { x: 52, y: 30, w: 24, h: 22, c: "#6A6356" },
-          { x: 4, y: 56, w: 32, h: 22, c: "#7C7567" },
-          { x: 40, y: 56, w: 36, h: 22, c: "#5A5448" },
-          { x: 4, y: 82, w: 40, h: 24, c: "#8C8474" },
-          { x: 48, y: 82, w: 28, h: 24, c: "#6A6356" },
+          { x: 4, y: 6, w: 30, h: 20, c: "#7C7567" },
+          { x: 38, y: 6, w: 30, h: 20, c: "#6A6356" },
+          { x: 4, y: 30, w: 38, h: 22, c: "#8C8474" },
+          { x: 46, y: 30, w: 22, h: 22, c: "#6A6356" },
+          { x: 4, y: 56, w: 28, h: 22, c: "#7C7567" },
+          { x: 36, y: 56, w: 32, h: 22, c: "#5A5448" },
+          { x: 4, y: 82, w: 36, h: 24, c: "#8C8474" },
+          { x: 44, y: 82, w: 24, h: 24, c: "#6A6356" },
         ].map((s, idx) => (
           <rect key={idx} x={s.x} y={s.y} width={s.w} height={s.h} rx="2" fill={s.c} stroke="#443E33" strokeWidth="1" />
         ))}
         {/* Pillar Stone Capital Header */}
-        <rect x="-8" y="-8" width="96" height="12" rx="2" fill="#8F8778" stroke="#484236" strokeWidth="2" />
+        <rect x="-6" y="-8" width="84" height="12" rx="2" fill="#8F8778" stroke="#484236" strokeWidth="2" />
         {/* Foundation Plinth */}
-        <rect x="-6" y="114" width="92" height="10" rx="2" fill="#4B453A" />
+        <rect x="-4" y="114" width="80" height="10" rx="2" fill="#4B453A" />
       </g>
 
-      {/* RIGHT STONE PILLAR (Flanks the road on East side at x = +80 from center road) */}
-      <g id="entrance-pillar-right" transform="translate(80, -60)">
-        <rect x="0" y="0" width="80" height="120" rx="4" fill="#5F594D" stroke="#3D372E" strokeWidth="2.5" />
+      {/* RIGHT STONE PILLAR (Flanks the road on East side at x = +128 to +200) */}
+      <g id="entrance-pillar-right" transform="translate(128, -60)">
+        <rect x="0" y="0" width="72" height="120" rx="4" fill="#5F594D" stroke="#3D372E" strokeWidth="2.5" />
         {[
-          { x: 4, y: 6, w: 38, h: 20, c: "#6A6356" },
-          { x: 46, y: 6, w: 30, h: 20, c: "#7C7567" },
-          { x: 4, y: 30, w: 28, h: 22, c: "#8C8474" },
-          { x: 36, y: 30, w: 40, h: 22, c: "#6A6356" },
-          { x: 4, y: 56, w: 44, h: 22, c: "#7C7567" },
-          { x: 52, y: 56, w: 24, h: 22, c: "#5A5448" },
-          { x: 4, y: 82, w: 32, h: 24, c: "#8C8474" },
-          { x: 40, y: 82, w: 36, h: 24, c: "#6A6356" },
+          { x: 4, y: 6, w: 34, h: 20, c: "#6A6356" },
+          { x: 42, y: 6, w: 26, h: 20, c: "#7C7567" },
+          { x: 4, y: 30, w: 26, h: 22, c: "#8C8474" },
+          { x: 34, y: 30, w: 34, h: 22, c: "#6A6356" },
+          { x: 4, y: 56, w: 38, h: 22, c: "#7C7567" },
+          { x: 46, y: 56, w: 22, h: 22, c: "#5A5448" },
+          { x: 4, y: 82, w: 30, h: 24, c: "#8C8474" },
+          { x: 38, y: 82, w: 30, h: 24, c: "#6A6356" },
         ].map((s, idx) => (
           <rect key={idx} x={s.x} y={s.y} width={s.w} height={s.h} rx="2" fill={s.c} stroke="#443E33" strokeWidth="1" />
         ))}
-        <rect x="-8" y="-8" width="96" height="12" rx="2" fill="#8F8778" stroke="#484236" strokeWidth="2" />
-        <rect x="-6" y="114" width="92" height="10" rx="2" fill="#4B453A" />
+        <rect x="-6" y="-8" width="84" height="12" rx="2" fill="#8F8778" stroke="#484236" strokeWidth="2" />
+        <rect x="-4" y="114" width="80" height="10" rx="2" fill="#4B453A" />
       </g>
     </g>
   );
@@ -770,25 +770,25 @@ export const IconicObuduEntranceOverhead: React.FC<{
 }> = ({ x = 800, y = 1950, scale = 1 }) => {
   return (
     <g id="entrance-overhead-archway" transform={`translate(${x}, ${y}) scale(${scale})`}>
-      {/* Heavy Timber Crossbeam spanning OVER the roadway from left to right pillar */}
-      <rect x="-170" y="-76" width="340" height="24" rx="6" fill="#4E311B" stroke="#2B1A0E" strokeWidth="2.5" />
-      <rect x="-160" y="-56" width="320" height="16" rx="4" fill="#3D2514" stroke="#24150A" strokeWidth="2" />
+      {/* Heavy Timber Crossbeams spanning OVER the roadway from left to right pillar */}
+      <rect x="-215" y="-76" width="430" height="24" rx="6" fill="#4E311B" stroke="#2B1A0E" strokeWidth="2.5" />
+      <rect x="-205" y="-54" width="410" height="16" rx="4" fill="#3D2514" stroke="#24150A" strokeWidth="2" />
 
       {/* Cedar Shingle Canopy Roof */}
-      <polygon points="0,-115 -190,-76 190,-76" fill="#693B1F" stroke="#3D2110" strokeWidth="2" />
-      <polygon points="0,-118 -180,-82 180,-82" fill="#844B27" />
+      <polygon points="0,-115 -225,-76 225,-76" fill="#693B1F" stroke="#3D2110" strokeWidth="2" />
+      <polygon points="0,-118 -215,-82 215,-82" fill="#844B27" />
 
       {/* THE ICONIC SCULPTED CATTLE HEAD WITH MAGNIFICENT HORNS */}
       <g id="sacred-bull-head" transform="translate(0, -96)">
         {/* Left Sweeping Long Horn */}
         <path
-          d="M -16 -6 C -55 -45 -115 -75 -155 -105 C -135 -85 -80 -35 -14 6 Z"
+          d="M -16 -6 C -48 -38 -88 -65 -122 -88 C -105 -72 -60 -28 -14 6 Z"
           fill="#47321F"
           stroke="#271A10"
           strokeWidth="2.5"
         />
         <path
-          d="M -20 -4 C -60 -40 -110 -68 -150 -98"
+          d="M -20 -4 C -52 -34 -84 -58 -118 -82"
           fill="none"
           stroke="#7A593B"
           strokeWidth="3.5"
@@ -797,13 +797,13 @@ export const IconicObuduEntranceOverhead: React.FC<{
 
         {/* Right Sweeping Long Horn */}
         <path
-          d="M 16 -6 C 55 -45 115 -75 155 -105 C 135 -85 80 -35 14 6 Z"
+          d="M 16 -6 C 48 -38 88 -65 122 -88 C 105 -72 60 -28 14 6 Z"
           fill="#47321F"
           stroke="#271A10"
           strokeWidth="2.5"
         />
         <path
-          d="M 20 -4 C 60 -40 110 -68 150 -98"
+          d="M 20 -4 C 52 -34 84 -58 118 -82"
           fill="none"
           stroke="#7A593B"
           strokeWidth="3.5"
@@ -836,36 +836,70 @@ export const IconicObuduEntranceOverhead: React.FC<{
         <circle cx="16" cy="13" r="1.5" fill="#FFE2B8" />
       </g>
 
-      {/* The Carved Welcome Signboard Plaque */}
-      <rect x="-140" y="-36" width="280" height="30" rx="4" fill="#FAF5E8" stroke="#50351E" strokeWidth="2.5" />
+      {/* Rustic Forged Iron Hanging Chains from Timber Beam */}
+      <line x1="-65" y1="-38" x2="-65" y2="-26" stroke="#2B1A0E" strokeWidth="2" strokeDasharray="3,2" />
+      <line x1="65" y1="-38" x2="65" y2="-26" stroke="#2B1A0E" strokeWidth="2" strokeDasharray="3,2" />
+      <circle cx="-65" cy="-26" r="3" fill="#D99B35" stroke="#422915" strokeWidth="1" />
+      <circle cx="65" cy="-26" r="3" fill="#D99B35" stroke="#422915" strokeWidth="1" />
+
+      {/* The Carved Welcome Signboard Plaque (safely centered between pillars with 30px clear margin) */}
+      <rect x="-98" y="-26" width="196" height="38" rx="5" fill="#3E2413" stroke="#24150A" strokeWidth="2" />
+      <rect x="-94" y="-22" width="188" height="30" rx="3" fill="#FAF5E8" stroke="#8C5C33" strokeWidth="1" />
+      {/* Brass Corner Studs */}
+      <circle cx="-90" cy="-18" r="1.5" fill="#D99B35" />
+      <circle cx="90" cy="-18" r="1.5" fill="#D99B35" />
+      <circle cx="-90" cy="4" r="1.5" fill="#D99B35" />
+      <circle cx="90" cy="4" r="1.5" fill="#D99B35" />
+
+      {/* Line 1: Elegant Welcome Header */}
       <text
         x="0"
-        y="-20"
-        fill="#1C2E19"
-        fontSize="11"
-        fontFamily="serif"
+        y="-13"
+        fill="#8A5122"
+        fontSize="7"
+        fontFamily="'Cinzel', Georgia, serif"
         fontWeight="bold"
         textAnchor="middle"
-        letterSpacing="2"
+        letterSpacing="2.5"
       >
-        WELCOME TO OBUDU MOUNTAIN RESORT
+        ✦ WELCOME TO ✦
       </text>
+
+      {/* Line 2: The Resort Name - crisp, prominent, constrained by textLength to guarantee ZERO overflow */}
       <text
         x="0"
-        y="-10"
-        fill="#7A4E1E"
-        fontSize="7.5"
+        y="-2"
+        fill="#162A14"
+        fontSize="9.5"
+        fontFamily="'Cinzel', Georgia, serif"
+        fontWeight="bold"
+        textAnchor="middle"
+        letterSpacing="1"
+        textLength="160"
+        lengthAdjust="spacingAndGlyphs"
+      >
+        OBUDU MOUNTAIN RESORT
+      </text>
+
+      {/* Line 3: Geographic & Elevation Subtitle */}
+      <text
+        x="0"
+        y="7"
+        fill="#634423"
+        fontSize="5.5"
         fontFamily="sans-serif"
         fontWeight="bold"
         textAnchor="middle"
-        letterSpacing="1.2"
+        letterSpacing="0.8"
+        textLength="150"
+        lengthAdjust="spacingAndGlyphs"
       >
-        ELEVATION 1,576 METERS • CROSS RIVER HIGHLANDS
+        ELEVATION 1,576M • CROSS RIVER HIGHLANDS
       </text>
 
-      {/* Hanging Wrought-Iron Bronze Lanterns on Chains */}
-      {[-120, 120].map((lx, idx) => (
-        <g key={`lantern-${idx}`} transform={`translate(${lx}, -36)`}>
+      {/* Hanging Wrought-Iron Bronze Lanterns on Chains (flanking the sign in the open clearance) */}
+      {[-112, 112].map((lx, idx) => (
+        <g key={`lantern-${idx}`} transform={`translate(${lx}, -38)`}>
           <line x1="0" y1="0" x2="0" y2="18" stroke="#2E1C0F" strokeWidth="2" />
           <polygon points="-6,18 6,18 8,30 -8,30" fill="#422915" stroke="#25160A" strokeWidth="1" />
           <circle cx="0" cy="24" r="9" fill="url(#grad-lantern)" />
