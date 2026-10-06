@@ -13,6 +13,7 @@ import {
   Camera,
   X,
   ArrowUpRight,
+  ArrowRight,
   Wind,
   Eye,
   MapPin,
@@ -1017,91 +1018,97 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* STORYTELLING WAYPOINT & FIELD GUIDE CARD                   */}
+      {/* STORYTELLING WAYPOINT CARD (REAL MODE ARCHITECTURAL STYLE) */}
       {/* ========================================================= */}
       {!cinemaMode && scrollProgress < 0.82 && (
-        <div className="relative z-20 px-4 pb-4 md:px-8 md:pb-6 max-w-lg pointer-events-none">
-          <div className="pointer-events-auto transition-all duration-300 rounded-3xl overflow-hidden shadow-[0_24px_60px_rgba(10,26,12,0.45)] border border-[#E5C37A]/40 bg-gradient-to-b from-[#FCFAF4]/96 via-[#F7F2E4]/96 to-[#F0E8D2]/96 backdrop-blur-xl text-[#1E361B] ring-1 ring-black/5">
-            {/* Top Bar: Phase Badge & Elevation */}
-            <div className="flex items-center justify-between gap-3 px-5 pt-4 pb-2.5 border-b border-[#E8DEC7]/80">
+        <div className="relative z-20 px-4 pb-4 md:px-8 md:pb-6 max-w-md pointer-events-none">
+          <div className="pointer-events-auto transition-all duration-300 bg-white border border-[#E5E5E5] rounded-none shadow-xl text-black">
+            {/* Top Bar: Editorial Monospace Metadata */}
+            <div className="px-5 py-3 border-b border-[#EAE8E2] flex items-center justify-between">
+              <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold">
+                {activeWaypoint.badge}
+              </div>
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1.5 text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full bg-[#1A3115] text-[#FBEBC8] shadow-sm border border-[#D99B35]/40">
-                  <Sparkles className="w-3 h-3 text-[#E5B853]" />
-                  {activeWaypoint.badge}
-                </span>
-                <span className="text-[11px] font-semibold text-[#8B5A24] flex items-center gap-1 bg-[#EFE5D0]/80 px-2.5 py-0.5 rounded-full border border-[#DFD1B8]">
-                  <Mountain className="w-3 h-3 text-[#A87A24]" />
+                <span className="font-mono text-[9px] px-2 py-0.5 bg-black text-white rounded-none font-bold uppercase tracking-wider">
                   {activeWaypoint.altitude}
                 </span>
+                <button
+                  onClick={() => setShowArchiveModal(true)}
+                  className="font-mono text-[9px] uppercase tracking-[0.2em] font-bold text-black hover:text-[#8C5E28] transition-colors cursor-pointer flex items-center gap-1 ml-1"
+                  title="View full gallery"
+                >
+                  <span className="hidden sm:inline">Gallery</span>
+                  <ArrowUpRight className="w-3 h-3" />
+                </button>
               </div>
-              <button
-                onClick={() => setShowArchiveModal(true)}
-                className="flex items-center gap-1 text-[11px] font-bold text-[#8C5C26] hover:text-[#183116] transition-colors cursor-pointer group"
-                title="View full Studio Ghibli art gallery"
-              >
-                <span className="hidden sm:inline">Gallery</span>
-                <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </button>
             </div>
 
-            {/* Narrative Body */}
-            <div className="p-5 md:p-6 space-y-3">
+            {/* Narrative Content */}
+            <div className="p-5 space-y-3">
               <div>
-                <h2 className="font-display-ghibli text-2xl md:text-[26px] font-bold text-[#142911] tracking-tight leading-tight">
+                <h2 className="font-display-ghibli text-xl md:text-2xl font-bold text-black tracking-tight uppercase leading-snug">
                   {activeWaypoint.title}
                 </h2>
-                <p className="font-serif-ghibli italic text-xs md:text-sm text-[#875822] mt-0.5 font-medium">
+                <p className="font-serif-ghibli italic text-xs text-[#777777] mt-0.5">
                   {activeWaypoint.subtitle}
                 </p>
               </div>
 
-              <p className="font-serif-ghibli text-[13.5px] leading-relaxed text-[#2B3E28]">
+              <p className="text-xs leading-relaxed text-[#555555]">
                 {activeWaypoint.narrative}
               </p>
 
-              {/* Ghibli Art Field Study Showcase (Clean, Evocative, No Filenames) */}
+              {/* Artwork Showcase (Real Mode Comparison/Chalet Card Geometry) */}
               <div
                 onClick={() => setShowArchiveModal(true)}
-                className="p-3 rounded-2xl bg-gradient-to-r from-[#F0E6D0] to-[#E9DEC4] border border-[#D9CBAE] hover:border-[#C4A968] flex items-center gap-3.5 cursor-pointer transition-all duration-200 group shadow-sm hover:shadow-md"
-                title="Click to explore the Ghibli Art Gallery"
+                className="border border-[#E5E5E5] bg-[#FBFBFA] p-3 rounded-none group cursor-pointer hover:border-black transition-colors"
+                title="Click to open Studio Ghibli Art Gallery"
               >
-                <div className="w-20 h-20 rounded-xl overflow-hidden bg-[#1E2E1D] shrink-0 border border-[#C5B490] relative shadow-inner">
+                <div className="h-32 sm:h-36 w-full overflow-hidden relative border border-[#E5E5E5] rounded-none bg-black">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={activeWaypoint.ghibliImg}
                     alt={activeWaypoint.photoLabel}
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                    className="w-full h-full object-cover rounded-none group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute top-2 left-2 px-2 py-0.5 bg-black text-[#D99B35] text-[8px] font-mono uppercase tracking-wider rounded-none font-bold">
+                    Studio Ghibli
+                  </div>
+                  <div className="absolute bottom-2 right-2 px-2 py-0.5 bg-black/80 text-white text-[8px] font-mono uppercase tracking-wider rounded-none">
+                    Expand
+                  </div>
                 </div>
 
-                <div className="flex-1 min-w-0 space-y-1">
-                  <div className="flex items-center justify-between text-[10px] font-bold text-[#8C5A24] uppercase tracking-wider">
-                    <span className="flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-[#D99B35]" />
-                      Ghibli Field Study
-                    </span>
-                    <span className="text-[#1D351A] font-semibold underline underline-offset-2 flex items-center gap-0.5 group-hover:translate-x-0.5 transition-transform text-[10px]">
-                      Explore Art <ChevronRight className="w-3 h-3" />
-                    </span>
-                  </div>
-                  <div className="text-xs font-bold text-[#152B13] truncate font-display-ghibli">
+                <div className="mt-2.5">
+                  <div className="font-display-ghibli text-sm font-bold text-black uppercase">
                     {activeWaypoint.photoLabel}
                   </div>
-                  <p className="text-[11px] text-[#4F6849] line-clamp-2 leading-snug font-serif-ghibli">
+                  <p className="text-[11px] text-[#666666] leading-snug mt-1 font-serif-ghibli italic">
                     {activeWaypoint.artisticTransformation}
                   </p>
                 </div>
+
+                {/* Retained Green Themed Button with Real Mode Geometry */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowArchiveModal(true);
+                  }}
+                  className="mt-3 w-full py-2.5 px-4 bg-[#1B3416] hover:bg-[#284820] text-white border border-[#1B3416] font-mono text-[10px] uppercase tracking-[0.25em] font-semibold rounded-none transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
+                >
+                  <span>Explore Art Gallery</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#E5B853]" />
+                </button>
               </div>
 
-              {/* Scroll Guide Footer */}
-              <div className="pt-2 border-t border-[#E8DEC7]/80 flex items-center justify-between text-[11px] text-[#637C5E]">
-                <span className="flex items-center gap-1.5 italic text-[#243E20] font-medium">
-                  <ChevronDown className="w-3.5 h-3.5 text-[#B3832B] animate-bounce" />
-                  Scroll down to ascend through the pass...
+              {/* Minimalist Editorial Footer */}
+              <div className="pt-2.5 border-t border-[#EAE8E2] flex items-center justify-between font-mono text-[9px] uppercase tracking-wider text-[#888888]">
+                <span className="flex items-center gap-1">
+                  Scroll to Ascend ↓
                 </span>
-                <span className="font-mono text-[10.5px] font-bold text-[#8A5B22] bg-[#EFE5D0]/80 px-2 py-0.5 rounded-full border border-[#DFD1B8]">
-                  {Math.round(scrollProgress * 100)}% Ascended
+                <span>
+                  {Math.round(scrollProgress * 100)}% Elevation
                 </span>
               </div>
             </div>
@@ -1110,42 +1117,41 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
       )}
 
       {/* ========================================================= */}
-      {/* PHASE 4: GRAND ARRIVAL & BOOKING SANCTUARY CARD            */}
+      {/* PHASE 4: RESERVATION CARD (REAL MODE ARCHITECTURAL STYLE)  */}
       {/* ========================================================= */}
       {!cinemaMode && scrollProgress >= 0.82 && (
         <div className="relative z-30 px-4 pb-6 md:px-8 md:pb-8 max-w-xl mx-auto w-full">
-          <div className="bg-[#FCFBF7] text-[#284820] p-6 md:p-8 rounded-2xl shadow-2xl border-2 border-[#D99B35] transition-all duration-500 animate-float-slow">
+          <div className="bg-white border border-[#E5E5E5] p-6 md:p-8 text-black rounded-none shadow-2xl transition-all duration-500">
             {!bookingConfirmed ? (
               <>
-                <div className="text-center mb-5">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#284820] text-[#FCECD2] text-xs font-semibold tracking-wider uppercase mb-2">
-                    <Sparkles className="w-3.5 h-3.5 text-[#E5B853]" />
-                    Phase IV • The Summit Reached (1,576m)
+                <div className="text-center mb-6 space-y-2">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-[#8C5E28] font-bold">
+                    EXCLUSIVE HIGHLAND RESERVATION • 1,576M
                   </div>
-                  <h2 className="font-display-ghibli text-2xl md:text-3xl font-extrabold text-[#1B3416] tracking-tight">
+                  <h2 className="font-display-ghibli text-2xl md:text-3xl font-bold text-black tracking-tight uppercase">
                     Reserve Your Mountain Sanctuary
                   </h2>
-                  <p className="font-serif-ghibli italic text-xs md:text-sm text-[#7D5A2B] mt-1">
-                    Two-tier cedar chalets on stilts overlooking misty mountain ridges.
+                  <p className="font-serif-ghibli italic text-xs md:text-sm text-[#777777] max-w-md mx-auto">
+                    Authentic cedar chalets on stilts with wrap-around balconies overlooking the morning clouds.
                   </p>
                 </div>
 
                 <form onSubmit={handleBookingSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-[#35522E] mb-1.5">
+                    <label className="block font-mono text-[10px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1.5">
                       Select Chalet Lodge
                     </label>
                     <select
                       id="select-chalet"
                       value={chaletType}
                       onChange={(e) => setChaletType(e.target.value)}
-                      className="w-full bg-[#F4EEDF] border border-[#C9BC9F] rounded-lg px-3 py-2 text-sm text-[#1B3416] font-medium focus:outline-none focus:ring-2 focus:ring-[#284820]"
+                      className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-4 py-2.5 text-xs text-black font-medium focus:outline-none"
                     >
                       <option value="Mountain View Chalet">
                         Mountain View Chalet (2-Tier Cedar Lodge on Stilts)
                       </option>
                       <option value="Presidential Villa">
-                        Presidential Villa (Panoramic Cloud Deck)
+                        Presidential Summit Villa (Panoramic Cloud Deck)
                       </option>
                       <option value="Honeycomb Stone Cottage">
                         Honeycomb Stone Cottage (Volcanic Hearth)
@@ -1158,9 +1164,9 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-[#35522E] mb-1">
+                      <label className="block font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-[#A87A24]" /> Check In
+                          <Calendar className="w-3 h-3 text-[#8C5E28]" /> Check In
                         </span>
                       </label>
                       <input
@@ -1168,14 +1174,14 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                         type="date"
                         value={checkInDate}
                         onChange={(e) => setCheckInDate(e.target.value)}
-                        className="w-full bg-[#F4EEDF] border border-[#C9BC9F] rounded-lg px-2.5 py-1.5 text-xs text-[#1B3416] font-medium focus:outline-none focus:ring-1 focus:ring-[#284820]"
+                        className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-[#35522E] mb-1">
+                      <label className="block font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
                         <span className="flex items-center gap-1">
-                          <Calendar className="w-3 h-3 text-[#A87A24]" /> Check Out
+                          <Calendar className="w-3 h-3 text-[#8C5E28]" /> Check Out
                         </span>
                       </label>
                       <input
@@ -1183,21 +1189,21 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                         type="date"
                         value={checkOutDate}
                         onChange={(e) => setCheckOutDate(e.target.value)}
-                        className="w-full bg-[#F4EEDF] border border-[#C9BC9F] rounded-lg px-2.5 py-1.5 text-xs text-[#1B3416] font-medium focus:outline-none focus:ring-1 focus:ring-[#284820]"
+                        className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-[11px] font-bold uppercase tracking-wider text-[#35522E] mb-1">
+                      <label className="block font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold mb-1">
                         <span className="flex items-center gap-1">
-                          <Users className="w-3 h-3 text-[#A87A24]" /> Guests
+                          <Users className="w-3 h-3 text-[#8C5E28]" /> Guests
                         </span>
                       </label>
                       <select
                         id="select-guests"
                         value={guestsCount}
                         onChange={(e) => setGuestsCount(Number(e.target.value))}
-                        className="w-full bg-[#F4EEDF] border border-[#C9BC9F] rounded-lg px-2.5 py-1.5 text-xs text-[#1B3416] font-medium focus:outline-none focus:ring-1 focus:ring-[#284820]"
+                        className="w-full bg-[#FAFAFA] border border-[#CCCCCC] focus:border-black rounded-none px-3 py-2 text-xs text-black font-medium focus:outline-none"
                       >
                         <option value={1}>1 Guest (Solo Retreat)</option>
                         <option value={2}>2 Guests (Highland Couple)</option>
@@ -1207,57 +1213,58 @@ export const ObuduJourney: React.FC<ObuduJourneyProps> = ({
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-[#E5DECD] space-y-2">
-                    <div className="text-[11px] font-bold uppercase tracking-wider text-[#35522E]">
-                      Curated Mountain Experiences
+                  <div className="pt-3 border-t border-[#EAE8E2] space-y-2">
+                    <div className="font-mono text-[9px] uppercase tracking-[0.25em] text-[#8C5E28] font-bold">
+                      Curated Highland Inclusions
                     </div>
-                    <label className="flex items-center gap-2 text-xs text-[#2A4424] cursor-pointer">
+                    <label className="flex items-center gap-2.5 text-xs text-[#555555] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={includeCableCar}
                         onChange={(e) => setIncludeCableCar(e.target.checked)}
-                        className="rounded border-[#A69778] text-[#284820] focus:ring-[#284820]"
+                        className="rounded-none border-[#AAAAAA] text-[#1B3416] focus:ring-0"
                       />
-                      <span>Complimentary Obudu Cable Car Unlimited Pass</span>
+                      <span>Complimentary Obudu Cable Car Unlimited Pass (4.0km ride)</span>
                     </label>
-                    <label className="flex items-center gap-2 text-xs text-[#2A4424] cursor-pointer">
+                    <label className="flex items-center gap-2.5 text-xs text-[#555555] cursor-pointer">
                       <input
                         type="checkbox"
                         checked={includeCanopyWalk}
                         onChange={(e) => setIncludeCanopyWalk(e.target.checked)}
-                        className="rounded border-[#A69778] text-[#284820] focus:ring-[#284820]"
+                        className="rounded-none border-[#AAAAAA] text-[#1B3416] focus:ring-0"
                       />
                       <span>Becheve Nature Reserve & Canopy Walkway Guide</span>
                     </label>
                   </div>
 
+                  {/* Retained Green Themed Button with Real Mode Geometry */}
                   <button
                     id="btn-reserve-sanctuary"
                     type="submit"
-                    className="w-full mt-3 py-3 px-6 rounded-xl bg-[#284820] hover:bg-[#1E3718] text-[#FCFBF7] font-display-ghibli font-bold text-sm tracking-widest uppercase transition-all shadow-lg hover:shadow-xl hover:scale-[1.01] active:scale-[0.99] flex items-center justify-center gap-2 cursor-pointer border border-[#E5B853]/60"
+                    className="w-full mt-4 py-3.5 px-6 bg-[#1B3416] hover:bg-[#284820] text-white border border-[#1B3416] font-mono font-bold text-xs uppercase tracking-[0.3em] transition-all rounded-none cursor-pointer shadow-md flex items-center justify-center gap-2"
                   >
-                    <span>Reserve Your Sanctuary</span>
-                    <ArrowUpRight className="w-4 h-4 text-[#FAD59A]" />
+                    <span>Confirm Sanctuary Reservation</span>
+                    <ArrowRight className="w-4 h-4 text-[#FAD59A]" />
                   </button>
                 </form>
               </>
             ) : (
-              <div className="text-center py-4 space-y-3">
-                <div className="w-14 h-14 mx-auto rounded-full bg-[#284820] text-[#E5B853] flex items-center justify-center shadow-lg border-2 border-[#D99B35]">
-                  <CheckCircle2 className="w-8 h-8" />
+              <div className="text-center py-6 space-y-3">
+                <div className="w-14 h-14 mx-auto border border-[#1B3416] text-[#1B3416] bg-[#EBF3E8] flex items-center justify-center rounded-none shadow-sm">
+                  <CheckCircle2 className="w-7 h-7" />
                 </div>
-                <h3 className="font-display-ghibli text-2xl font-bold text-[#1B3416]">
+                <h3 className="font-display-ghibli text-2xl font-bold text-black uppercase">
                   Sanctuary Awaits You
                 </h3>
-                <p className="font-serif-ghibli text-sm text-[#4E6848] max-w-sm mx-auto">
+                <p className="font-serif-ghibli italic text-xs text-[#666666] max-w-sm mx-auto">
                   Your journey to the clouds is confirmed. A warm cedar fire and fresh highland cream tea are being prepared at {chaletType}.
                 </p>
-                <div className="bg-[#F4EEDF] p-3 rounded-lg text-xs text-[#523A1B] font-mono border border-[#D5C9B0] max-w-xs mx-auto">
+                <div className="bg-[#F8F7F3] p-3 text-xs text-[#8C5E28] font-mono border border-[#E5E5E5] max-w-xs mx-auto rounded-none font-bold uppercase tracking-wider">
                   Booking Ref: {bookingRef}
                 </div>
                 <button
                   onClick={() => setBookingConfirmed(false)}
-                  className="mt-2 text-xs font-semibold text-[#8C5E28] hover:text-[#284820] underline cursor-pointer"
+                  className="mt-2 text-xs font-mono uppercase tracking-[0.2em] font-semibold text-[#8C5E28] hover:text-black underline cursor-pointer"
                 >
                   Modify Reservation
                 </button>
